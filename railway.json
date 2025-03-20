@@ -1,8 +1,0 @@
-{
-  "projectId":"fee64fb5-f074-4379-93cc-f915f1bacb76",
-  "plugin":"your_plugin_id",
-  "env": {
-    "DATABASE_URL":"jdbc:postgresql://TutorDb_owner:npg_ELmdhzql1iu2@ep-soft-fog-abmzkyls.eu-west-2.aws.neon.tech/TutorDb?sslmode=require",
-    "API_KEY":"85b5c2e7-d0ab-427c-8f59-eb4b7592c38b"
-  }
-}
