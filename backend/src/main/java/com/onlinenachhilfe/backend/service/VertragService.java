@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class VertragService {
 
-    @Autowired
-    private VertragDao vertragDao;
+    private final VertragDao vertragDao;
+
+    public VertragService(VertragDao vertragDao) {
+        this.vertragDao = vertragDao;
+    }
 
     public Vertrag saveVertrag(VertragDto vertragDto) {
         Vertrag vertrag = new Vertrag();

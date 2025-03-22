@@ -11,9 +11,11 @@ import java.util.Optional;
 @Service
 public class NutzerService {
 
-    @Autowired
-    private NutzerDao nutzerDao;
+    private final NutzerDao nutzerDao;
 
+    public NutzerService(NutzerDao nutzerDao) {
+        this.nutzerDao = nutzerDao;
+    }
 
     public Nutzer saveNutzer(Nutzer nutzer) {
         return nutzerDao.save(nutzer);

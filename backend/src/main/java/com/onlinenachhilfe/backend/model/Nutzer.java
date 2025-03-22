@@ -1,5 +1,6 @@
 package com.onlinenachhilfe.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"passwort"})
 public class Nutzer {
 
     @Id
@@ -41,140 +43,4 @@ public class Nutzer {
 
     @ElementCollection // Spécifie une collection simple
     private List<String> rolle = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAnrede() {
-        return anrede;
-    }
-
-    public void setAnrede(String anrede) {
-        this.anrede = anrede;
-    }
-
-    public String getTitel() {
-        return titel;
-    }
-
-    public void setTitel(String titel) {
-        this.titel = titel;
-    }
-
-    public String getNachname() {
-        return nachname;
-    }
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
-    }
-
-    public String getVorname() {
-        return vorname;
-    }
-
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
-    }
-
-    public String getEmailadresse() {
-        return emailadresse;
-    }
-
-    public void setEmailadresse(String emailadresse) {
-        this.emailadresse = emailadresse;
-    }
-
-    public String getPasswort() {
-        return passwort;
-    }
-
-    public void setPasswort(String passwort) {
-        this.passwort = passwort;
-    }
-
-    public String getStrasse() {
-        return strasse;
-    }
-
-    public void setStrasse(String strasse) {
-        this.strasse = strasse;
-    }
-
-    public String getHausnummer() {
-        return hausnummer;
-    }
-
-    public void setHausnummer(String hausnummer) {
-        this.hausnummer = hausnummer;
-    }
-
-    public String getPostleitzahl() {
-        return postleitzahl;
-    }
-
-    public void setPostleitzahl(String postleitzahl) {
-        this.postleitzahl = postleitzahl;
-    }
-
-    public String getTelefonnummer() {
-        return telefonnummer;
-    }
-
-    public void setTelefonnummer(String telefonnummer) {
-        this.telefonnummer = telefonnummer;
-    }
-
-    public String getStadt() {
-        return stadt;
-    }
-
-    public void setStadt(String stadt) {
-        this.stadt = stadt;
-    }
-
-    public String getLand() {
-        return land;
-    }
-
-    public void setLand(String land) {
-        this.land = land;
-    }
-
-    public List<String> getFaecher() {
-        return faecher;
-    }
-
-    public void setFaecher(List<String> faecher) {
-        this.faecher = faecher;
-    }
-
-    public List<Long> getPartner() {
-        return partner;
-    }
-
-    public void setPartner(List<Long> partner) {
-        this.partner = partner;
-    }
-
-    public List<String> getRolle() {
-        return rolle;
-    }
-
-    public void setRolle(List<String> rolle) {
-        this.rolle = rolle;
-    }
-
-    public String getZoomlink() {
-        return zoomlink;
-    }
-
-    public void setZoomlink(String zoomlink) {
-        this.zoomlink = zoomlink;
-    }
 }

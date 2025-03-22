@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class TerminService {
 
-    @Autowired
-    private TerminDao terminDao;
+    private final TerminDao terminDao;
+
+    public TerminService(TerminDao terminDao) {
+        this.terminDao = terminDao;
+    }
 
     public Termin saveTermin(TerminDto terminDto) {
         Termin termin = new Termin();
