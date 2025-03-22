@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"passwort"})
 public class Nutzer {
 
     @Id

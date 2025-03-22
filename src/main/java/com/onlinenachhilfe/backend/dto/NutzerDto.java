@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties({"passwort"})
 public class NutzerDto {
     private String anrede;
     private String titel;
