@@ -1,6 +1,7 @@
 package com.onlinenachhilfe.backend.controller;
 
 import com.onlinenachhilfe.backend.dto.StudentDto;
+import com.onlinenachhilfe.backend.dto.TutorDto;
 import com.onlinenachhilfe.backend.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -83,5 +84,18 @@ public class StudentController {
     @GetMapping("/parent/{parentFirstName}")
     public ResponseEntity<List<StudentDto>> getStudentsByParentFirstName(@PathVariable String parentFirstName) {
         return ResponseEntity.ok(studentService.getStudentsByParentFirstName(parentFirstName));
+    }
+    @PutMapping("/{id}")
+    public StudentDto updateTutor(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+        return studentService.updateStudent(id, studentDto); // Update method added
+    }
+    @DeleteMapping("/email/{email}")
+    public void deleteStudentByEmail(@PathVariable String email) {
+        studentService.deleteStudentByEmail(email); // New method for deleting by email
+    }
+
+    @DeleteMapping("/phone/{phoneNumber}")
+    public void deleteStudentByPhoneNumber(@PathVariable String phoneNumber) {
+        studentService.deleteStudentByPhoneNumber(phoneNumber); // New method for deleting by phone
     }
 }

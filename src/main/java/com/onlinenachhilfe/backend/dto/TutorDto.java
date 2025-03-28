@@ -49,5 +49,6 @@ public class TutorDto {
     private List<Long> appointmentIds = new ArrayList<>();
     private String taxId;
     private String hobbies;
+    private String zoomLink;
 
 }

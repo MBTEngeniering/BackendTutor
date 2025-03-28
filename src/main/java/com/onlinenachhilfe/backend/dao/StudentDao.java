@@ -18,4 +18,5 @@ public interface StudentDao extends JpaRepository<Student, Long> {
     List<Student> findByDateOfBirth(LocalDate dateOfBirth);
     Optional<Student> findByIban(String iban);
     List<Student> findByParentFirstName(String parentFirstName);
+
 }

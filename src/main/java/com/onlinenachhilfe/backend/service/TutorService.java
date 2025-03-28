@@ -75,6 +75,35 @@ public class TutorService {
     public List<TutorDto> getTutorsByTaxId(String taxId) {
         return tutorDao.findByTaxId(taxId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
+    public TutorDto updateTutor(Long id, TutorDto tutorDto) {
+
+        Tutor existingTutor = tutorDao.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Tutor with ID " + id + " not found."));
+
+        existingTutor =convertToEntity(tutorDto);
+
+        Tutor updatedTutor = tutorDao.save(existingTutor);
+
+        return convertToDto(updatedTutor);
+    }
+    public void deleteTutorByEmail(String email) {
+        Tutor tutor = tutorDao.findByEmailAddress(email).orElseThrow(() ->
+                new IllegalArgumentException("Tutor with Email " + email + " not found."));
+        tutorDao.delete(tutor);
+    }
+    public void deleteTutorByPhoneNumber(String phoneNumber) {
+        Tutor tutor = tutorDao.findByPhoneNumber(phoneNumber).orElseThrow(() ->
+                new IllegalArgumentException("Tutor with Phone Number " + phoneNumber + " not found."));
+        tutorDao.delete(tutor);
+    }
+    public void deleteTutorById(Long id) {
+        if (!tutorDao.existsById(id)) {
+            throw new IllegalArgumentException("Tutor with ID " + id + " does not exist.");
+        }
+
+        tutorDao.deleteById(id);
+    }
+
 
     private Tutor convertToEntity(TutorDto tutorDto) {
         Tutor tutor = new Tutor();
@@ -108,6 +137,7 @@ public class TutorService {
         tutor.setAccountActive(tutorDto.isAccountActive());
         tutor.setTaxId(tutorDto.getTaxId());
         tutor.setHobbies(tutorDto.getHobbies());
+        tutor.setZoomLink(tutorDto.getZoomLink());
 
         return tutor;
     }
@@ -143,6 +173,7 @@ public class TutorService {
         tutorDto.setAccountActive(tutor.isAccountActive());
         tutorDto.setTaxId(tutor.getTaxId());
         tutorDto.setHobbies(tutor.getHobbies());
+        tutorDto.setZoomLink(tutor.getZoomLink());
 
         return tutorDto;
     }

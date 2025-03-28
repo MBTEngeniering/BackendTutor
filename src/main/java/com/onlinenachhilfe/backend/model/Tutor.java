@@ -19,5 +19,6 @@ public class Tutor extends User {
     private String taxId;
 
     private String hobbies;
+    private String zoomLink;
 
 }

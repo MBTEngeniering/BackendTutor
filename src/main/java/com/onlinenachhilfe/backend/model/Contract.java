@@ -14,15 +14,12 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contractor_id", nullable = false)
-    private Enterprise contractor;
+    private Long contractorId;
     private Long contracteId;
-
     private String contractContent;
 
     private Double hourlyRate;
 
     private Integer hoursPerMonth;
+    private String contracteeStatus;
 }

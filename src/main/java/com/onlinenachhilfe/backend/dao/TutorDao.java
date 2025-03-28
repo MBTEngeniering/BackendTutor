@@ -18,4 +18,5 @@ public interface TutorDao extends JpaRepository<Tutor, Long> {
     List<Tutor> findByDateOfBirth(LocalDate dateOfBirth);
     Optional<Tutor> findByIban(String iban);
     List<Tutor> findByTaxId(String parentFirstName);
+
 }

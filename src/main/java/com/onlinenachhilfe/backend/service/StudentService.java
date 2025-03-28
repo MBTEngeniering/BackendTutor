@@ -2,8 +2,10 @@ package com.onlinenachhilfe.backend.service;
 
 import com.onlinenachhilfe.backend.dao.StudentDao;
 import com.onlinenachhilfe.backend.dto.StudentDto;
+import com.onlinenachhilfe.backend.dto.TutorDto;
 import com.onlinenachhilfe.backend.exception.UserAlreadyExistsException;
 import com.onlinenachhilfe.backend.model.Student;
+import com.onlinenachhilfe.backend.model.Tutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +76,28 @@ public class StudentService {
 
     public List<StudentDto> getStudentsByParentFirstName(String parentFirstName) {
         return studentDao.findByParentFirstName(parentFirstName).stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+    public void deleteStudentByEmail(String email) {
+        Student student = studentDao.findByEmailAddress(email).orElseThrow(() ->
+                new IllegalArgumentException("Student with Email " + email + " not found."));
+        studentDao.delete(student);
+    }
+
+    public StudentDto updateStudent(Long id, StudentDto studentDto) {
+
+        Student existingStudent = studentDao.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Student with ID " + id + " not found."));
+
+        existingStudent =convertToEntity(studentDto);
+
+        Student updatedStudent = studentDao.save(existingStudent);
+
+        return convertToDto(updatedStudent);
+    }
+    public void deleteStudentByPhoneNumber(String phoneNumber) {
+        Student student = studentDao.findByPhoneNumber(phoneNumber).orElseThrow(() ->
+                new IllegalArgumentException("Student with Phone Number " + phoneNumber + " not found."));
+        studentDao.delete(student);
     }
 
     private Student convertToEntity(StudentDto studentDto) {
