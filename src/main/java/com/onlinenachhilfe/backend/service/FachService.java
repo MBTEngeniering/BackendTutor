@@ -6,6 +6,7 @@ import com.onlinenachhilfe.backend.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,5 +56,8 @@ public class FachService {
         } else {
             throw new IllegalArgumentException("Fach with ID " + id + " not found");
         }
+    }
+    public List<Fach> getAllFaecher() {
+        return fachDao.findAll(); // Ruft alle Fächer aus der Datenbank ab
     }
 }
