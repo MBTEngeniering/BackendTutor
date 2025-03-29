@@ -2,6 +2,7 @@ package com.onlinenachhilfe.backend.service;
 
 import com.onlinenachhilfe.backend.dao.TutorDao;
 import com.onlinenachhilfe.backend.dto.TutorDto;
+import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
 import com.onlinenachhilfe.backend.exception.UserAlreadyExistsException;
 import com.onlinenachhilfe.backend.model.Tutor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class TutorService {
 
     @Autowired
     private TutorDao tutorDao;
+
 
     public TutorDto createTutor(TutorDto tutorDto) {
         // Überprüfe, ob die E-Mail oder Telefonnummer bereits existiert
@@ -177,4 +179,27 @@ public class TutorService {
 
         return tutorDto;
     }
+    public String login(String emailOrPhoneNumber, String password) {
+
+        Optional<Tutor> tutorOptional;
+
+        if (emailOrPhoneNumber.contains("@")) {
+            tutorOptional = tutorDao.findByEmailAddress(emailOrPhoneNumber);
+        } else {
+            tutorOptional = tutorDao.findByPhoneNumber(emailOrPhoneNumber);
+        }
+
+        if (tutorOptional.isEmpty()) {
+            throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
+        }
+
+        Tutor tutor = tutorOptional.get();
+
+        if (password.equals(tutor.getPassword())) {
+            return "Login erfolgreich!";
+        } else {
+            throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
+        }
+    }
+
 }

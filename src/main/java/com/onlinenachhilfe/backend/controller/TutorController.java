@@ -1,8 +1,12 @@
 package com.onlinenachhilfe.backend.controller;
 
+import com.onlinenachhilfe.backend.dto.LoginRequestDto;
 import com.onlinenachhilfe.backend.dto.TutorDto;
+import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
 import com.onlinenachhilfe.backend.service.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -88,6 +92,14 @@ public class TutorController {
     public List<TutorDto> getTutorsByTaxId(@PathVariable String taxId) {
         return tutorService.getTutorsByTaxId(taxId);
     }
-
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequest) {
+        try {
+            String result = tutorService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidCredentialsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+    }
 
 }

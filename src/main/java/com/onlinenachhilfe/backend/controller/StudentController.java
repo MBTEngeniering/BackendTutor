@@ -1,9 +1,11 @@
 package com.onlinenachhilfe.backend.controller;
 
+import com.onlinenachhilfe.backend.dto.LoginRequestDto;
 import com.onlinenachhilfe.backend.dto.StudentDto;
-import com.onlinenachhilfe.backend.dto.TutorDto;
+import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
 import com.onlinenachhilfe.backend.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("api/students")
 public class StudentController {
 
     @Autowired
@@ -97,5 +99,15 @@ public class StudentController {
     @DeleteMapping("/phone/{phoneNumber}")
     public void deleteStudentByPhoneNumber(@PathVariable String phoneNumber) {
         studentService.deleteStudentByPhoneNumber(phoneNumber); // New method for deleting by phone
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequest) {
+        try {
+            String result = studentService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidCredentialsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
     }
 }

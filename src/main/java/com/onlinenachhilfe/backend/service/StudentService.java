@@ -3,6 +3,7 @@ package com.onlinenachhilfe.backend.service;
 import com.onlinenachhilfe.backend.dao.StudentDao;
 import com.onlinenachhilfe.backend.dto.StudentDto;
 import com.onlinenachhilfe.backend.dto.TutorDto;
+import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
 import com.onlinenachhilfe.backend.exception.UserAlreadyExistsException;
 import com.onlinenachhilfe.backend.model.Student;
 import com.onlinenachhilfe.backend.model.Tutor;
@@ -168,5 +169,27 @@ public class StudentService {
         studentDto.setContractIds(student.getContractIds());
         studentDto.setSchoolTutorsIds(student.getSchoolTutorsIds());
         return studentDto;
+    }
+    public String login(String emailOrPhoneNumber, String password) {
+
+        Optional<Student> studentOptional;
+
+        if (emailOrPhoneNumber.contains("@")) {
+            studentOptional = studentDao.findByEmailAddress(emailOrPhoneNumber);
+        } else {
+            studentOptional = studentDao.findByPhoneNumber(emailOrPhoneNumber);
+        }
+
+        if (studentOptional.isEmpty()) {
+            throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
+        }
+
+       Student student = studentOptional.get();
+
+        if (password.equals(student.getPassword())) {
+            return "Login erfolgreich!";
+        } else {
+            throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
+        }
     }
 }
