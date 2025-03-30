@@ -17,8 +17,11 @@ import java.util.Optional;
 @RequestMapping("/api/tutors")
 public class TutorController {
 
-    @Autowired
-    private TutorService tutorService;
+    private final TutorService tutorService;
+
+    public TutorController(TutorService tutorService) {
+        this.tutorService = tutorService;
+    }
 
     @PostMapping
     public TutorDto createTutor(@RequestBody TutorDto tutorDto) {
@@ -44,11 +47,11 @@ public class TutorController {
         return tutorService.getTutorByEmail(email);
     }
 
-
     @DeleteMapping("/{id}")
     public void deleteTutor(@PathVariable Long id) {
         tutorService.deleteTutorById(id);
     }
+
     @DeleteMapping("/email/{email}")
     public void deleteTutorByEmail(@PathVariable String email) {
         tutorService.deleteTutorByEmail(email); // New method for deleting by email
@@ -101,5 +104,4 @@ public class TutorController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
-
 }
