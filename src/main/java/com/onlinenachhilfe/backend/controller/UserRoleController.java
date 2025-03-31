@@ -21,7 +21,7 @@ public class UserRoleController {
         this.userRoleService = userRoleService;
     }
 
-    // GET: Rolle nach ID finden
+
     @GetMapping("/{id}")
     public ResponseEntity<UserRoleDto> getRoleById(@PathVariable Long id) {
         Optional<UserRoleDto> userRoleDto = userRoleService.findRoleById(id)
@@ -30,7 +30,7 @@ public class UserRoleController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // GET: Rolle nach Rolle finden
+
     @GetMapping("/search")
     public ResponseEntity<UserRoleDto> getRoleByRole(@RequestParam Role role) {
         Optional<UserRoleDto> userRoleDto = userRoleService.findRoleByRole(role)
@@ -39,7 +39,7 @@ public class UserRoleController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // POST: Neue Rolle erstellen
+
     @PostMapping
     public ResponseEntity<UserRoleDto> createRole(@RequestBody UserRoleDto userRoleDto) {
         UserRole userRole = convertDtoToEntity(userRoleDto);
@@ -48,21 +48,20 @@ public class UserRoleController {
     }
 
 
-    // DELETE: Rolle nach ID löschen
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoleById(@PathVariable Long id) {
         userRoleService.deleteRoleById(id);
         return ResponseEntity.noContent().build();
     }
 
-    // DELETE: Rolle nach Rolle löschen
+
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteRoleByRole(@RequestParam Role role) {
         userRoleService.deleteRoleByRole(role);
         return ResponseEntity.noContent().build();
     }
 
-    // PUT: Rolle aktualisieren
     @PutMapping("/{id}")
     public ResponseEntity<UserRoleDto> updateRole(@PathVariable Long id, @RequestBody UserRoleDto userRoleDto) {
         try {
@@ -81,7 +80,6 @@ public class UserRoleController {
         return userRole;
     }
 
-    // Methode zur Konvertierung von UserRole in UserRoleDto
     private UserRoleDto convertEntityToDto(UserRole userRole) {
         UserRoleDto userRoleDto = new UserRoleDto();
         userRoleDto.setId(userRole.getId());

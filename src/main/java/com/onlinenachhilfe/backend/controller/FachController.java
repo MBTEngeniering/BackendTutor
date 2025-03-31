@@ -23,7 +23,7 @@ public class FachController {
         this.fachService = fachService;
     }
 
-    // Methode zur Konvertierung von FachDto in Fach
+
     private Fach convertDtoToEntity(FachDto fachDto) {
         Fach fach = new Fach();
         fach.setId(fachDto.getId());
@@ -39,7 +39,6 @@ public class FachController {
         return fachDto;
     }
 
-    // GET: Fach nach ID finden
     @GetMapping("/{id}")
     public ResponseEntity<FachDto> getFachById(@PathVariable Long id) {
         Optional<Fach> fach = fachService.findFachById(id);
@@ -47,7 +46,7 @@ public class FachController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // GET: Fach nach Fach (Subject) finden
+
     @GetMapping("/search")
     public ResponseEntity<FachDto> getFachByFach(@RequestParam Subject fach) {
         Optional<Fach> fachEntity = fachService.findFachByFach(fach);
@@ -55,7 +54,7 @@ public class FachController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // POST: Neues Fach erstellen
+
     @PostMapping
     public ResponseEntity<FachDto> createFach(@RequestBody FachDto fachDto) {
         Fach fach = convertDtoToEntity(fachDto); // DTO -> Entity
@@ -63,21 +62,20 @@ public class FachController {
         return ResponseEntity.ok(convertEntityToDto(createdFach)); // Entity -> DTO
     }
 
-    // DELETE: Fach nach ID löschen
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFachById(@PathVariable Long id) {
         fachService.deleteFachById(id);
         return ResponseEntity.noContent().build();
     }
 
-    // DELETE: Fach nach Fach (Subject) löschen
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteFachByFach(@RequestParam Subject fach) {
         fachService.deleteFachByFach(fach);
         return ResponseEntity.noContent().build();
     }
 
-    // PUT: Fach aktualisieren
+
     @PutMapping("/{id}")
     public ResponseEntity<FachDto> updateFach(@PathVariable Long id, @RequestBody Subject newFach) {
         try {
@@ -87,7 +85,7 @@ public class FachController {
             return ResponseEntity.notFound().build();
         }
     }
-    // GET: Alle Fächer abrufen
+
     @GetMapping
     public ResponseEntity<List<FachDto>> getAllFaecher() {
         List<Fach> faecher = fachService.getAllFaecher();

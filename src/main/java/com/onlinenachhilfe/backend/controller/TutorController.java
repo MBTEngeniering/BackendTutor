@@ -4,7 +4,6 @@ import com.onlinenachhilfe.backend.dto.LoginRequestDto;
 import com.onlinenachhilfe.backend.dto.TutorDto;
 import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
 import com.onlinenachhilfe.backend.service.TutorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,12 +53,12 @@ public class TutorController {
 
     @DeleteMapping("/email/{email}")
     public void deleteTutorByEmail(@PathVariable String email) {
-        tutorService.deleteTutorByEmail(email); // New method for deleting by email
+        tutorService.deleteTutorByEmail(email);
     }
 
     @DeleteMapping("/phone/{phoneNumber}")
     public void deleteTutorByPhoneNumber(@PathVariable String phoneNumber) {
-        tutorService.deleteTutorByPhoneNumber(phoneNumber); // New method for deleting by phone
+        tutorService.deleteTutorByPhoneNumber(phoneNumber);
     }
     @GetMapping("/lastname/{lastName}")
     public List<TutorDto> getTutorsByLastName(@PathVariable String lastName) {

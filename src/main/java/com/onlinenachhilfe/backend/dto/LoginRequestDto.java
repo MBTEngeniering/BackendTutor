@@ -1,11 +1,16 @@
 package com.onlinenachhilfe.backend.dto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequestDto {
 
     private String emailOrPhoneNumber;
     private String password;
 
-    // Getter und Setter
     public String getEmailOrPhoneNumber() {
         return emailOrPhoneNumber;
     }

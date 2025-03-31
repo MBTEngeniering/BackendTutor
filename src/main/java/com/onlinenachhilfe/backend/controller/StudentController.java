@@ -89,16 +89,16 @@ public class StudentController {
     }
     @PutMapping("/{id}")
     public StudentDto updateTutor(@PathVariable Long id, @RequestBody StudentDto studentDto) {
-        return studentService.updateStudent(id, studentDto); // Update method added
+        return studentService.updateStudent(id, studentDto);
     }
     @DeleteMapping("/email/{email}")
     public void deleteStudentByEmail(@PathVariable String email) {
-        studentService.deleteStudentByEmail(email); // New method for deleting by email
+        studentService.deleteStudentByEmail(email);
     }
 
     @DeleteMapping("/phone/{phoneNumber}")
     public void deleteStudentByPhoneNumber(@PathVariable String phoneNumber) {
-        studentService.deleteStudentByPhoneNumber(phoneNumber); // New method for deleting by phone
+        studentService.deleteStudentByPhoneNumber(phoneNumber);
     }
 
     @PostMapping("/login")

@@ -18,7 +18,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000", frontendUrl)); // Erlaubt Anfragen von deinem React-Frontend
+        config.setAllowedOrigins(List.of("http://localhost:3000", frontendUrl));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD", "TRACE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
