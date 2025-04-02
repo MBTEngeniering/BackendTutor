@@ -175,7 +175,7 @@ public class StudentService {
         studentDto.setSchoolTutorsIds(student.getSchoolTutorsIds());
         return studentDto;
     }
-    public String login(String emailOrPhoneNumber, String password) {
+    public Student login(String emailOrPhoneNumber, String password) {
 
         Optional<Student> studentOptional;
 
@@ -192,7 +192,7 @@ public class StudentService {
        Student student = studentOptional.get();
 
         if (password.equals(passwordEncryptionUtil.decrypt(student.getPassword()))) {
-            return "Login erfolgreich!";
+            return student;
         } else {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
         }

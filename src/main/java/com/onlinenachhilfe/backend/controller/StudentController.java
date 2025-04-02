@@ -3,6 +3,7 @@ package com.onlinenachhilfe.backend.controller;
 import com.onlinenachhilfe.backend.dto.LoginRequestDto;
 import com.onlinenachhilfe.backend.dto.StudentDto;
 import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
+import com.onlinenachhilfe.backend.model.Student;
 import com.onlinenachhilfe.backend.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -100,14 +101,14 @@ public class StudentController {
     public void deleteStudentByPhoneNumber(@PathVariable String phoneNumber) {
         studentService.deleteStudentByPhoneNumber(phoneNumber);
     }
-
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
         try {
-            String result = studentService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            Student student = studentService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
+            return ResponseEntity.ok(student);
         } catch (InvalidCredentialsException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+
 }
