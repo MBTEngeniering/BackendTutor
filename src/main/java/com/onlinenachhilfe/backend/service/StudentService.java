@@ -18,8 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    @Autowired
-    private StudentDao studentDao;
+   private StudentDao studentDao;
+    private PasswordEncryptionUtil passwordEncryptionUtil;
+  @Autowired
+    public StudentService(StudentDao studentDao, PasswordEncryptionUtil passwordEncryptionUtil) {
+        this.studentDao = studentDao;
+        this.passwordEncryptionUtil = passwordEncryptionUtil;
+    }
 
     public StudentDto createStudent(StudentDto studentDto) {
         // Überprüfe, ob die E-Mail oder Telefonnummer bereits existiert
@@ -108,7 +113,7 @@ public class StudentService {
         student.setLastName(studentDto.getLastName());
         student.setFirstName(studentDto.getFirstName());
         student.setEmailAddress(studentDto.getEmailAddress());
-        student.setPassword(studentDto.getPassword());
+        student.setPassword(passwordEncryptionUtil.encrypt(studentDto.getPassword()));
         student.setStreet(studentDto.getStreet());
         student.setHouseNumber(studentDto.getHouseNumber());
         student.setPostalCode(studentDto.getPostalCode());
@@ -144,7 +149,7 @@ public class StudentService {
         studentDto.setLastName(student.getLastName());
         studentDto.setFirstName(student.getFirstName());
         studentDto.setEmailAddress(student.getEmailAddress());
-        studentDto.setPassword(student.getPassword());
+        studentDto.setPassword(passwordEncryptionUtil.decrypt(student.getPassword()));
         studentDto.setStreet(student.getStreet());
         studentDto.setHouseNumber(student.getHouseNumber());
         studentDto.setPostalCode(student.getPostalCode());
@@ -186,7 +191,7 @@ public class StudentService {
 
        Student student = studentOptional.get();
 
-        if (password.equals(student.getPassword())) {
+        if (password.equals(passwordEncryptionUtil.decrypt(student.getPassword()))) {
             return "Login erfolgreich!";
         } else {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");

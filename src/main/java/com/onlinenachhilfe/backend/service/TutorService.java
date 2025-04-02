@@ -16,9 +16,14 @@ import java.util.stream.Collectors;
 @Service
 public class TutorService {
 
-    @Autowired
-    private TutorDao tutorDao;
 
+    private TutorDao tutorDao;
+    private PasswordEncryptionUtil passwordEncryptionUtil;
+@Autowired
+    public TutorService(TutorDao tutorDao, PasswordEncryptionUtil passwordEncryptionUtil) {
+        this.tutorDao = tutorDao;
+        this.passwordEncryptionUtil = passwordEncryptionUtil;
+    }
 
     public TutorDto createTutor(TutorDto tutorDto) {
         // Überprüfe, ob die E-Mail oder Telefonnummer bereits existiert
@@ -114,7 +119,7 @@ public class TutorService {
         tutor.setLastName(tutorDto.getLastName());
         tutor.setFirstName(tutorDto.getFirstName());
         tutor.setEmailAddress(tutorDto.getEmailAddress());
-        tutor.setPassword(tutorDto.getPassword());
+        tutor.setPassword(passwordEncryptionUtil.encrypt(tutorDto.getPassword()));
         tutor.setStreet(tutorDto.getStreet());
         tutor.setHouseNumber(tutorDto.getHouseNumber());
         tutor.setPostalCode(tutorDto.getPostalCode());
@@ -151,7 +156,7 @@ public class TutorService {
         tutorDto.setLastName(tutor.getLastName());
         tutorDto.setFirstName(tutor.getFirstName());
         tutorDto.setEmailAddress(tutor.getEmailAddress());
-        tutorDto.setPassword(tutor.getPassword());
+        tutorDto.setPassword(passwordEncryptionUtil.decrypt(tutor.getPassword()));
         tutorDto.setStreet(tutor.getStreet());
         tutorDto.setHouseNumber(tutor.getHouseNumber());
         tutorDto.setPostalCode(tutor.getPostalCode());
@@ -195,7 +200,7 @@ public class TutorService {
 
         Tutor tutor = tutorOptional.get();
 
-        if (password.equals(tutor.getPassword())) {
+        if (password.equals(passwordEncryptionUtil.decrypt(tutor.getPassword()))) {
             return "Login erfolgreich!";
         } else {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
