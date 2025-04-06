@@ -28,15 +28,16 @@ public class TutorController {
         return tutorService.createTutor(tutorDto);
     }
 
-
     @GetMapping
     public List<TutorDto> getAllTutors() {
         return tutorService.getAllTutors();
     }
+
     @PutMapping("/{id}")
     public TutorDto updateTutor(@PathVariable Long id, @RequestBody TutorDto tutorDto) {
         return tutorService.updateTutor(id, tutorDto); // Update method added
     }
+
     @GetMapping("/{id}")
     public Optional<TutorDto> getTutorById(@PathVariable Long id) {
         return tutorService.getTutorById(id);
@@ -61,6 +62,7 @@ public class TutorController {
     public void deleteTutorByPhoneNumber(@PathVariable String phoneNumber) {
         tutorService.deleteTutorByPhoneNumber(phoneNumber);
     }
+
     @GetMapping("/lastname/{lastName}")
     public List<TutorDto> getTutorsByLastName(@PathVariable String lastName) {
         return tutorService.getTutorsByLastName(lastName);
@@ -95,6 +97,7 @@ public class TutorController {
     public List<TutorDto> getTutorsByTaxId(@PathVariable String taxId) {
         return tutorService.getTutorsByTaxId(taxId);
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
         try {

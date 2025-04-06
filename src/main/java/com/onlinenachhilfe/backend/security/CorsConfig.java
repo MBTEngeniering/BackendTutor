@@ -18,7 +18,13 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000", frontendUrl));
+        String[] frontendOrigins = new String[]{
+                frontendUrl,
+                "http://localhost:3000",
+                "https://fairstudy.eu",
+                "https://fairstudy.org"
+        };
+        config.setAllowedOrigins(List.of(frontendOrigins));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD", "TRACE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
