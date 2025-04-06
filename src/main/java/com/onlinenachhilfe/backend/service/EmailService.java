@@ -38,6 +38,8 @@ public class EmailService {
     private String domain;
     @Value("${mailgun.from.email}")
     private String emailFrom;
+    @Value("${mailgun.server.url}")
+    private String serverUrl;
 
     public MessageResponse sendEmailWithAttachments(String emailTo, String subject, String text, List<File> attachments) {
         return sendEmail(emailTo, subject, text, false, 0, attachments);
@@ -66,7 +68,7 @@ public class EmailService {
      */
     public MessageResponse sendEmail(String emailTo, String subject, String text, boolean html, int delay, List<File> attachments) {
         try {
-            MailgunMessagesApi mailgunMessagesApi = MailgunClient.config(apiKey).createAsyncApi(MailgunMessagesApi.class);
+            MailgunMessagesApi mailgunMessagesApi = MailgunClient.config(serverUrl, apiKey).createAsyncApi(MailgunMessagesApi.class);
 
             Message.MessageBuilder builder = Message.builder()
                     .from(emailFrom)
@@ -100,7 +102,7 @@ public class EmailService {
 
     public List<Stats> getStats() {
         try {
-            MailgunStatisticsApi mailgunStatisticsApi = MailgunClient.config(apiKey)
+            MailgunStatisticsApi mailgunStatisticsApi = MailgunClient.config(serverUrl, apiKey)
                     .createApi(MailgunStatisticsApi.class);
             StatisticsOptions statsOptions = StatisticsOptions.builder()
                     .start(ZonedDateTime.now().minusDays(3))

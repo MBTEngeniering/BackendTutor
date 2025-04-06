@@ -26,6 +26,7 @@ public class EmailController {
         this.tutorService = tutorService;
     }
 
+    /*
     @GetMapping("/sendAll")
     public String spamAll() {
         var tutors = tutorService.getAllTutors();
@@ -45,6 +46,7 @@ public class EmailController {
 
         return i + " Emails sent successfully!";
     }
+     */
 
     @PostMapping("/text")
     public String sendTextEmail(@RequestBody JsonNode jsonBody) {
