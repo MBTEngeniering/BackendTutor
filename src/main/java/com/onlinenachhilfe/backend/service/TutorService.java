@@ -118,7 +118,7 @@ public class TutorService {
         tutor.setTitle(tutorDto.getTitle());
         tutor.setLastName(tutorDto.getLastName());
         tutor.setFirstName(tutorDto.getFirstName());
-        tutor.setEmailAddress(tutorDto.getEmailAddress());
+        tutor.setEmailAddress(tutorDto.getEmailAddress().toLowerCase());
         tutor.setPassword(passwordEncryptionUtil.encrypt(tutorDto.getPassword()));
         tutor.setStreet(tutorDto.getStreet());
         tutor.setHouseNumber(tutorDto.getHouseNumber());
