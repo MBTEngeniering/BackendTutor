@@ -2,7 +2,6 @@ package com.onlinenachhilfe.backend.controller;
 
 import com.onlinenachhilfe.backend.dto.StudentDto;
 import com.onlinenachhilfe.backend.dto.TutorDto;
-import com.onlinenachhilfe.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

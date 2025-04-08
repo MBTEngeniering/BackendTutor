@@ -215,4 +215,9 @@ public class StudentService {
                 .filter(student -> student != null)
                 .collect(Collectors.toList());
     }
+    public List<Long> getStudentContractIds(Long studentId) {
+        Student student = studentDao.findById(studentId).orElseThrow(() ->
+                new IllegalArgumentException("Student mit ID " + studentId + " nicht gefunden."));
+        return student.getContractIds();
+    }
 }

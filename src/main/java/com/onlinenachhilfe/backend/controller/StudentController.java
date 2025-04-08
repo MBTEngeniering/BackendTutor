@@ -115,6 +115,9 @@ public class StudentController {
         List<StudentDto> savedStudents = studentService.createValidStudentsFromList(studentList);
         return new ResponseEntity<>(savedStudents, HttpStatus.CREATED);
     }
-
+    @GetMapping("/{studentId}/contracts")
+    public List<Long> getStudentContractIds(@PathVariable Long studentId) {
+        return studentService.getStudentContractIds(studentId);
+    }
 
 }
