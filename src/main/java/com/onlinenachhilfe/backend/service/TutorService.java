@@ -118,7 +118,7 @@ public class TutorService {
         tutor.setTitle(tutorDto.getTitle());
         tutor.setLastName(tutorDto.getLastName());
         tutor.setFirstName(tutorDto.getFirstName());
-        tutor.setEmailAddress(tutorDto.getEmailAddress().toLowerCase());
+        tutor.setEmailAddress(tutorDto.getEmailAddress());
         tutor.setPassword(passwordEncryptionUtil.encrypt(tutorDto.getPassword()));
         tutor.setStreet(tutorDto.getStreet());
         tutor.setHouseNumber(tutorDto.getHouseNumber());
@@ -206,5 +206,20 @@ public class TutorService {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
         }
     }
+    public List<TutorDto> createTutorsIgnoreErrors(List<TutorDto> tutorDtoList) {
+        return tutorDtoList.stream()
+                .map(tutorDto -> {
+                    try {
+                        return createTutor(tutorDto);
+                    } catch (UserAlreadyExistsException e) {
+                        // Optional: Logging
+                        System.out.println("Fehler beim Erstellen von Tutor: " + e.getMessage());
+                        return null;
+                    }
+                })
+                .filter(tutorDto -> tutorDto != null)
+                .collect(Collectors.toList());
+    }
+
 
 }

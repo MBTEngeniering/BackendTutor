@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-   private StudentDao studentDao;
+    private StudentDao studentDao;
     private PasswordEncryptionUtil passwordEncryptionUtil;
-  @Autowired
+
+    @Autowired
     public StudentService(StudentDao studentDao, PasswordEncryptionUtil passwordEncryptionUtil) {
         this.studentDao = studentDao;
         this.passwordEncryptionUtil = passwordEncryptionUtil;
@@ -83,6 +84,7 @@ public class StudentService {
     public List<StudentDto> getStudentsByParentFirstName(String parentFirstName) {
         return studentDao.findByParentFirstName(parentFirstName).stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
     public void deleteStudentByEmail(String email) {
         Student student = studentDao.findByEmailAddress(email).orElseThrow(() ->
                 new IllegalArgumentException("Student with Email " + email + " not found."));
@@ -94,12 +96,13 @@ public class StudentService {
         Student existingStudent = studentDao.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Student with ID " + id + " not found."));
 
-        existingStudent =convertToEntity(studentDto);
+        existingStudent = convertToEntity(studentDto);
 
         Student updatedStudent = studentDao.save(existingStudent);
 
         return convertToDto(updatedStudent);
     }
+
     public void deleteStudentByPhoneNumber(String phoneNumber) {
         Student student = studentDao.findByPhoneNumber(phoneNumber).orElseThrow(() ->
                 new IllegalArgumentException("Student with Phone Number " + phoneNumber + " not found."));
@@ -175,6 +178,7 @@ public class StudentService {
         studentDto.setSchoolTutorsIds(student.getSchoolTutorsIds());
         return studentDto;
     }
+
     public Student login(String emailOrPhoneNumber, String password) {
 
         Optional<Student> studentOptional;
@@ -189,12 +193,26 @@ public class StudentService {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
         }
 
-       Student student = studentOptional.get();
+        Student student = studentOptional.get();
 
         if (password.equals(passwordEncryptionUtil.decrypt(student.getPassword()))) {
             return student;
         } else {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
         }
+    }
+    public List<StudentDto> createValidStudentsFromList(List<StudentDto> students) {
+        return students.stream()
+                .filter(dto -> !studentDao.findByEmailAddress(dto.getEmailAddress()).isPresent())
+                .filter(dto -> !studentDao.findByPhoneNumber(dto.getPhoneNumber()).isPresent())
+                .map(dto -> {
+                    try {
+                        return createStudent(dto);
+                    } catch (Exception e) {
+                        return null; // falls noch etwas anderes schiefgeht
+                    }
+                })
+                .filter(student -> student != null)
+                .collect(Collectors.toList());
     }
 }

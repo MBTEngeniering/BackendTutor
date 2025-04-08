@@ -110,5 +110,11 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+    @PostMapping("/batch-safe")
+    public ResponseEntity<List<StudentDto>> createValidStudents(@RequestBody List<StudentDto> studentList) {
+        List<StudentDto> savedStudents = studentService.createValidStudentsFromList(studentList);
+        return new ResponseEntity<>(savedStudents, HttpStatus.CREATED);
+    }
+
 
 }
