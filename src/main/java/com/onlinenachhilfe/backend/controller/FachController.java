@@ -5,9 +5,13 @@ import com.onlinenachhilfe.backend.model.Fach;
 import com.onlinenachhilfe.backend.model.Subject;
 import com.onlinenachhilfe.backend.service.FachService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +39,7 @@ public class FachController {
     private FachDto convertEntityToDto(Fach fach) {
         FachDto fachDto = new FachDto();
         fachDto.setId(fach.getId());
-       fachDto.setFach(fach.getFach());
+        fachDto.setFach(fach.getFach());
         return fachDto;
     }
 
@@ -46,6 +50,25 @@ public class FachController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/trans/{lang}")
+    public ResponseEntity<?> getFachByLang(@PathVariable String lang) {
+        lang = lang.toUpperCase().charAt(0) + lang.substring(1).toLowerCase();
+
+        List<Fach> faecher = fachService.getAllFaecher();
+        List<FachDto> fachDtos = new ArrayList<>();
+        try {
+            Method method = Fach.class.getMethod("get" + lang);
+            for (Fach fach : faecher) {
+                FachDto fachDto = convertEntityToDto(fach);
+                fachDto.setTranslation((String) method.invoke(fach));
+                fachDtos.add(fachDto);
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body("{\"Error\": \"Language not found\"}");
+        }
+
+        return ResponseEntity.ok(fachDtos);
+    }
 
     @GetMapping("/search")
     public ResponseEntity<FachDto> getFachByFach(@RequestParam Subject fach) {
@@ -62,7 +85,6 @@ public class FachController {
         return ResponseEntity.ok(convertEntityToDto(createdFach)); // Entity -> DTO
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFachById(@PathVariable Long id) {
         fachService.deleteFachById(id);
@@ -74,7 +96,6 @@ public class FachController {
         fachService.deleteFachByFach(fach);
         return ResponseEntity.noContent().build();
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<FachDto> updateFach(@PathVariable Long id, @RequestBody Subject newFach) {
@@ -94,5 +115,4 @@ public class FachController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(fachDtos);
     }
-
 }

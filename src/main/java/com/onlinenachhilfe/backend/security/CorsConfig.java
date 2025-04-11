@@ -21,6 +21,8 @@ public class CorsConfig {
         String[] frontendOrigins = new String[]{
                 frontendUrl,
                 "http://localhost:3000",
+                "http://localhost:4173",
+                "https://fairstudy.de",
                 "https://fairstudy.eu",
                 "https://fairstudy.org"
         };
