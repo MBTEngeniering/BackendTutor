@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -145,6 +147,7 @@ public class TutorService {
         tutor.setTaxId(tutorDto.getTaxId());
         tutor.setHobbies(tutorDto.getHobbies());
         tutor.setZoomLink(tutorDto.getZoomLink());
+       tutor.setAvailabilityTime(tutorDto.getAvailabilityTime());
 
         return tutor;
     }
@@ -176,6 +179,7 @@ public class TutorService {
         tutorDto.setFachIds(tutor.getFachIds());
         tutorDto.setContractIds(tutor.getContractIds());
         tutorDto.setSchoolTutorsIds(tutor.getSchoolTutorsIds());
+        tutorDto.setAvailabilityTime(tutor.getAvailabilityTime());
 
         tutorDto.setAccountActive(tutor.isAccountActive());
         tutorDto.setTaxId(tutor.getTaxId());

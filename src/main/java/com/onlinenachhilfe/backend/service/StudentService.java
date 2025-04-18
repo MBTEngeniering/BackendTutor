@@ -137,6 +137,7 @@ public class StudentService {
         student.setFachIds(studentDto.getFachIds());
         student.setContractIds(studentDto.getContractIds());
         student.setSchoolTutorsIds(studentDto.getSchoolTutorsIds());
+        student.setAvailabilityTime(studentDto.getAvailabilityTime());
 
         student.setAccountActive(studentDto.isAccountActive());
         student.setParentFirstName(studentDto.getParentFirstName());
@@ -172,6 +173,7 @@ public class StudentService {
         studentDto.setSchoolLevel(student.getSchoolLevel());
         studentDto.setUserRoleIds(student.getUserRoleIds());
         studentDto.setTutorsIds(student.getTutorsIds());
+        studentDto.setAvailabilityTime(student.getAvailabilityTime());
         studentDto.setAppointmentIds(student.getAppointmentIds());
         studentDto.setFachIds(student.getFachIds());
         studentDto.setContractIds(student.getContractIds());

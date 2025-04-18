@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -47,8 +48,11 @@ public class TutorDto {
     private List<Long> contractIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Long> appointmentIds = new ArrayList<>();
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    private List<Date> availabilityTime = new ArrayList<>();
     private String taxId;
     private String hobbies;
     private String zoomLink;
+
 
 }
