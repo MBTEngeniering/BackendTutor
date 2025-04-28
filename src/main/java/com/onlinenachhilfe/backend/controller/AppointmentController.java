@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -25,7 +26,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Appointment> getAppointmentById(@PathVariable Long id) {
+    public ResponseEntity<Appointment> getAppointmentById(@PathVariable UUID id) {
         Appointment appointment = appointmentService.findById(id);
         if (appointment != null) {
             return ResponseEntity.ok(appointment);
@@ -35,19 +36,19 @@ public class AppointmentController {
     }
 
     @GetMapping("/tutor/{tutorId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByTutorId(@PathVariable Long tutorId) {
+    public ResponseEntity<List<Appointment>> getAppointmentsByTutorId(@PathVariable UUID tutorId) {
         List<Appointment> appointments = appointmentService.findByTutorId(tutorId);
         return ResponseEntity.ok(appointments);
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByStudentId(@PathVariable Long studentId) {
+    public ResponseEntity<List<Appointment>> getAppointmentsByStudentId(@PathVariable UUID studentId) {
         List<Appointment> appointments = appointmentService.findByStudentId(studentId);
         return ResponseEntity.ok(appointments);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Appointment> updateAppointment(@PathVariable Long id, @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<Appointment> updateAppointment(@PathVariable UUID id, @RequestBody AppointmentDTO appointmentDTO) {
         try {
             Appointment updatedAppointment = appointmentService.updateAppointment(id, appointmentDTO);
             return ResponseEntity.ok(updatedAppointment);

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -21,12 +22,9 @@ public class User {
     private String title;
     private String lastName;
     private String firstName;
-    private String emailAddress;
-    private String password;
     private String street;
     private String houseNumber;
     private String postalCode;
-    private String phoneNumber;
     private String city;
     private String country;
     private LocalDate dateOfBirth;
@@ -38,18 +36,18 @@ public class User {
     private String picture;
     private boolean accountActive;
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private  List<Long> tutorsIds = new ArrayList<>();
+    private  List<UUID> tutorsIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Long> userRoleIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> schoolTutorsIds = new ArrayList<>();
+    private List<UUID> schoolTutorsIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Long> fachIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> contractIds = new ArrayList<>();
+    private List<UUID> contractIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Date> availabilityTime = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> appointmentIds = new ArrayList<>();
+    private List<UUID> appointmentIds = new ArrayList<>();
 
 }

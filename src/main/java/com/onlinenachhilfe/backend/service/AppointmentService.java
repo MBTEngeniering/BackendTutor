@@ -1,34 +1,33 @@
 package com.onlinenachhilfe.backend.service;
 
+import com.onlinenachhilfe.backend.Utils.UUIDGenerator;
 import com.onlinenachhilfe.backend.dao.AppointmentDao;
-import com.onlinenachhilfe.backend.dao.StudentDao;
-import com.onlinenachhilfe.backend.dao.TutorDao;
+import com.onlinenachhilfe.backend.dao.AllUserDao;
 import com.onlinenachhilfe.backend.dto.AppointmentDTO;
 import com.onlinenachhilfe.backend.exception.UserNotFoundException;
 import com.onlinenachhilfe.backend.model.Appointment;
-import com.onlinenachhilfe.backend.model.Student;
-import com.onlinenachhilfe.backend.model.Tutor;
+import com.onlinenachhilfe.backend.model.AllUSer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AppointmentService {
 
     private final AppointmentDao appointmentDao;
-    private final TutorDao tutorDao;
-    private final StudentDao studentDao;
+    private final AllUserDao tutorDao;
 
-    public AppointmentService(AppointmentDao appointmentDao, TutorDao tutorDao, StudentDao studentDao) {
+    public AppointmentService(AppointmentDao appointmentDao, AllUserDao tutorDao) {
         this.appointmentDao = appointmentDao;
         this.tutorDao = tutorDao;
-        this.studentDao = studentDao;
+
     }
 
     public Appointment createAppointment(AppointmentDTO appointmentDTO) {
-        Optional<Tutor> tutor = tutorDao.findById(appointmentDTO.getTutorId());
-        Optional<Student> student = studentDao.findById(appointmentDTO.getStudentId());
+        Optional<AllUSer> tutor = tutorDao.findById(appointmentDTO.getTutorId());
+        Optional<AllUSer> student = tutorDao.findById(appointmentDTO.getStudentId());
 
         if (tutor.isEmpty()) {
             throw new UserNotFoundException("Tutor with ID " + appointmentDTO.getTutorId() + " not found.");
@@ -38,20 +37,20 @@ public class AppointmentService {
             throw new UserNotFoundException("Student with ID " + appointmentDTO.getStudentId() + " not found.");
         }
 
-
+        UUID uid= new UUIDGenerator().generateUUID();
+        appointmentDTO.setId(uid);
         Appointment appointment = convertDtoToEntity(appointmentDTO);
         Appointment savedAppointment = appointmentDao.save(appointment);
-
 
         tutor.get().getAppointmentIds().add(savedAppointment.getId());
         student.get().getAppointmentIds().add(savedAppointment.getId());
 
         tutorDao.save(tutor.get());
-        studentDao.save(student.get());
+        tutorDao.save(student.get());
 
         return savedAppointment;
     }
-    public Appointment updateAppointment(Long id, AppointmentDTO updatedAppointmentDTO) {
+    public Appointment updateAppointment(UUID id, AppointmentDTO updatedAppointmentDTO) {
         Optional<Appointment> existingAppointment = appointmentDao.findById(id);
         if (existingAppointment.isEmpty()) {
             throw new UserNotFoundException("Appointment with ID " + id + " not found.");
@@ -63,34 +62,34 @@ public class AppointmentService {
     }
 
     public void deleteAppointment(Long id) {
-        Optional<Appointment> existingAppointment = appointmentDao.findById(id);
-        if (existingAppointment.isEmpty()) {
-            throw new UserNotFoundException("Appointment with ID " + id + " not found.");
-        }
-
-        Tutor tutor = tutorDao.findById(existingAppointment.get().getTutorId())
-                .orElseThrow(() -> new UserNotFoundException("Tutor not found for Appointment ID " + id));
-        Student student = studentDao.findById(existingAppointment.get().getStudentId())
-                .orElseThrow(() -> new UserNotFoundException("Student not found for Appointment ID " + id));
-
-
-        tutor.getAppointmentIds().remove(id);
-        student.getAppointmentIds().remove(id);
-
-        tutorDao.save(tutor);
-        studentDao.save(student);
-        appointmentDao.deleteById(id);
+//        Optional<Appointment> existingAppointment = appointmentDao.findById(id);
+//        if (existingAppointment.isEmpty()) {
+//            throw new UserNotFoundException("Appointment with ID " + id + " not found.");
+//        }
+//
+//        AllUSer tutor = tutorDao.findById(existingAppointment.get().getTutorId())
+//                .orElseThrow(() -> new UserNotFoundException("Tutor not found for Appointment ID " + id));
+//        AllUSer student = tutorDao.findById(existingAppointment.get().getStudentId())
+//                .orElseThrow(() -> new UserNotFoundException("Student not found for Appointment ID " + id));
+//
+//
+//        tutor.getAppointmentIds().remove(id);
+//        student.getAppointmentIds().remove(id);
+//
+//        tutorDao.save(tutor);
+//        tutorDao.save(student);
+//        appointmentDao.deleteById(id);
     }
 
-    public Appointment findById(Long id) {
+    public Appointment findById(UUID id) {
         return appointmentDao.findById(id).orElse(null);
     }
 
-    public List<Appointment> findByTutorId(Long tutorId) {
+    public List<Appointment> findByTutorId(UUID tutorId) {
         return appointmentDao.findByTutorId(tutorId);
     }
 
-    public List<Appointment> findByStudentId(Long studentId) {
+    public List<Appointment> findByStudentId(UUID studentId) {
         return appointmentDao.findByStudentId(studentId);
     }
 

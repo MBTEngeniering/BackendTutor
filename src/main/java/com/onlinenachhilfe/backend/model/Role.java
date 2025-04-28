@@ -5,5 +5,5 @@ public enum Role {
     ENTERPRISE,
     FINANCE,
     ADMIN,
-    MANAGE
+    SUPPORT
 }

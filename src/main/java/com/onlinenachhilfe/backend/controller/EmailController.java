@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mailgun.model.stats.Stats;
 import com.onlinenachhilfe.backend.service.EmailService;
-import com.onlinenachhilfe.backend.service.TutorService;
+import com.onlinenachhilfe.backend.service.AllUserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -19,9 +19,9 @@ public class EmailController {
 
 
     private final EmailService emailService;
-    private final TutorService tutorService;
+    private final AllUserService tutorService;
 
-    public EmailController(EmailService emailService, TutorService tutorService) {
+    public EmailController(EmailService emailService, AllUserService tutorService) {
         this.emailService = emailService;
         this.tutorService = tutorService;
     }

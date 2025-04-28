@@ -10,12 +10,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public class TutorDto {
+public class AllUserDto {
+    private UUID id;
     private String salutation;
     private String title;
     private String lastName;
@@ -35,19 +37,22 @@ public class TutorDto {
     private String iban;
     private String description;
     private String picture;
+    private String parentFirstName;
+    private String parentLastName;
+    private String schoolLevel;
     private boolean accountActive;
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> tutorsIds = new ArrayList<>();
+    private List<UUID> tutorsIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Long> userRoleIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> schoolTutorsIds = new ArrayList<>();
+    private List<UUID> schoolTutorsIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Long> fachIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> contractIds = new ArrayList<>();
+    private List<UUID> contractIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Long> appointmentIds = new ArrayList<>();
+    private List<UUID> appointmentIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<Date> availabilityTime = new ArrayList<>();
     private String taxId;
