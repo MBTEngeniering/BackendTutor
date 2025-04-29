@@ -1,7 +1,7 @@
-package com.onlinenachhilfe.backend.controller;
+package de.fairstudy.backend.controller;
 
-import com.onlinenachhilfe.backend.dto.ContractDto;
-import com.onlinenachhilfe.backend.service.ContractService;
+import de.fairstudy.backend.dto.ContractDto;
+import de.fairstudy.backend.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;

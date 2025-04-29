@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final ApiAuthenticationService apiAuthenticationService;
+    /*private final ApiAuthenticationService apiAuthenticationService;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -37,5 +37,5 @@ public class AuthController {
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Login failed: " + ex.getMessage());
         }
-    }
+    }*/
 }

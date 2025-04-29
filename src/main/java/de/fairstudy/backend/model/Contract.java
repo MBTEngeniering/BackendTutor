@@ -1,4 +1,4 @@
-package com.onlinenachhilfe.backend.model;
+package de.fairstudy.backend.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

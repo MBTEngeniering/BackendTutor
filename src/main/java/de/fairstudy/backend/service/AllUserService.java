@@ -1,14 +1,14 @@
-package com.onlinenachhilfe.backend.service;
+package de.fairstudy.backend.service;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.onlinenachhilfe.backend.Utils.UUIDGenerator;
-import com.onlinenachhilfe.backend.dao.AllUserDao;
-import com.onlinenachhilfe.backend.dto.AllUserDto;
-import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
-import com.onlinenachhilfe.backend.exception.UserAlreadyExistsException;
-import com.onlinenachhilfe.backend.exception.UserNotFoundException;
-import com.onlinenachhilfe.backend.model.AllUSer;
-import com.onlinenachhilfe.backend.model.Appointment;
+import de.fairstudy.backend.Utils.UUIDGenerator;
+import de.fairstudy.backend.dao.AllUserDao;
+import de.fairstudy.backend.dto.AllUserDto;
+import de.fairstudy.backend.exception.InvalidCredentialsException;
+import de.fairstudy.backend.exception.UserAlreadyExistsException;
+import de.fairstudy.backend.exception.UserNotFoundException;
+import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

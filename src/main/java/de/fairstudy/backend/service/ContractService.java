@@ -1,11 +1,11 @@
-package com.onlinenachhilfe.backend.service;
+package de.fairstudy.backend.service;
 
-import com.onlinenachhilfe.backend.Utils.UUIDGenerator;
-import com.onlinenachhilfe.backend.dao.AllUserDao;
-import com.onlinenachhilfe.backend.dao.ContractDao;
-import com.onlinenachhilfe.backend.dto.ContractDto;
-import com.onlinenachhilfe.backend.model.AllUSer;
-import com.onlinenachhilfe.backend.model.Contract;
+import de.fairstudy.backend.Utils.UUIDGenerator;
+import de.fairstudy.backend.dao.AllUserDao;
+import de.fairstudy.backend.dao.ContractDao;
+import de.fairstudy.backend.dto.ContractDto;
+import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

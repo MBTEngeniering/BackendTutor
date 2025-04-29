@@ -1,4 +1,4 @@
-package com.onlinenachhilfe.backend.dto;
+package de.fairstudy.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

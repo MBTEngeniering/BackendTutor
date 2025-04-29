@@ -1,6 +1,6 @@
-package com.onlinenachhilfe.backend.dao;
+package de.fairstudy.backend.dao;
 
-import com.onlinenachhilfe.backend.model.Contract;
+import de.fairstudy.backend.model.Contract;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

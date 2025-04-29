@@ -52,7 +52,7 @@ public class ApiAuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).build();
     }
      */
-
+/*
     public AuthenticationResponse authenticate(de.fairstudy.backend.auth.AuthenticationRequest request) {
         //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
@@ -68,5 +68,5 @@ public class ApiAuthenticationService {
 //        user.setLastLogin(LocalDateTime.now());
 //        userRepository.save(user);
         return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).username(user.getEmailAddress()).build();
-    }
+    }*/
 }
