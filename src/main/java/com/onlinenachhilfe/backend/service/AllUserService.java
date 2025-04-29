@@ -1,31 +1,35 @@
 package com.onlinenachhilfe.backend.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.onlinenachhilfe.backend.Utils.UUIDGenerator;
 import com.onlinenachhilfe.backend.dao.AllUserDao;
 import com.onlinenachhilfe.backend.dto.AllUserDto;
 import com.onlinenachhilfe.backend.exception.InvalidCredentialsException;
 import com.onlinenachhilfe.backend.exception.UserAlreadyExistsException;
+import com.onlinenachhilfe.backend.exception.UserNotFoundException;
 import com.onlinenachhilfe.backend.model.AllUSer;
+import com.onlinenachhilfe.backend.model.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class AllUserService {
 
 
+    private final ContractService contractService;
     private AllUserDao allUserDao;
     private PasswordEncryptionUtil passwordEncryptionUtil;
+    private AppointmentService appointmentService;
 @Autowired
-    public AllUserService(AllUserDao allUserDao, PasswordEncryptionUtil passwordEncryptionUtil) {
+    public AllUserService(AllUserDao allUserDao, PasswordEncryptionUtil passwordEncryptionUtil, ContractService contractService) {
         this.allUserDao = allUserDao;
         this.passwordEncryptionUtil = passwordEncryptionUtil;
-    }
+    this.contractService = contractService;
+}
 
     public AllUserDto createUsers(AllUserDto allUserDto) {
         // Überprüfe, ob die E-Mail oder Telefonnummer bereits existiert
@@ -89,11 +93,12 @@ public class AllUserService {
     }
     public AllUserDto updateUsers(UUID id, AllUserDto allUserDto) {
 
-        AllUSer existingUser = allUserDao.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Tutor with ID " + id + " not found."));
+        Optional<AllUSer> optionalAllUSer = allUserDao.findById(id);
+        if (optionalAllUSer.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + id + " not found.");
+        }
 
-        existingUser =convertToEntity(allUserDto);
-
+        AllUSer existingUser =convertToEntity(allUserDto);
         AllUSer updatedTutor = allUserDao.save(existingUser);
 
         return convertToDto(updatedTutor);
@@ -101,17 +106,59 @@ public class AllUserService {
     public void deleteUsersByEmail(String email) {
         AllUSer allUSer = allUserDao.findByEmailAddress(email).orElseThrow(() ->
                 new IllegalArgumentException("Tutor with Email " + email + " not found."));
+        List<UUID> contractIds = allUSer.getContractIds();
+        List<UUID> appointmentIds = allUSer.getAppointmentIds();
+        for(UUID contractId : contractIds) {
+            contractService.deleteContract(contractId);
+        }
+        for(UUID appointmentId : appointmentIds) {
+            appointmentService.deleteAppointment(appointmentId);
+        }
         allUserDao.delete(allUSer);
     }
     public void deleteUsersByPhoneNumber(String phoneNumber) {
         AllUSer tutor = allUserDao.findByPhoneNumber(phoneNumber).orElseThrow(() ->
                 new IllegalArgumentException("Tutor with Phone Number " + phoneNumber + " not found."));
+        List<UUID> contractIds = tutor.getContractIds();
+        List<UUID> appointmentIds = tutor.getAppointmentIds();
+        for(UUID contractId : contractIds) {
+            contractService.deleteContract(contractId);
+        }
+        for(UUID appointmentId : appointmentIds) {
+            appointmentService.deleteAppointment(appointmentId);
+        }
         allUserDao.delete(tutor);
     }
     public void deleteUsersById(UUID id) {
-        if (!allUserDao.existsById(id)) {
-            throw new IllegalArgumentException("Tutor with ID " + id + " does not exist.");
+
+        AllUSer allUSer = allUserDao.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Tutor with Email " + id + " not found."));
+
+         List<UUID> tutorsIds = allUSer.getTutorsIds();
+       List<UUID> schoolTutorsIds = allUSer.getSchoolTutorsIds();
+
+        List<UUID> contractIds = allUSer.getContractIds();
+        List<UUID> appointmentIds = allUSer.getAppointmentIds();
+        for(UUID contractId : contractIds) {
+            contractService.deleteContract(contractId);
         }
+        for(UUID appointmentId : appointmentIds) {
+            appointmentService.deleteAppointment(appointmentId);
+        }
+
+        for(UUID tutorId : tutorsIds) {
+            AllUSer tutor = allUserDao.findById(tutorId).orElseThrow(() ->
+                    new IllegalArgumentException("Tutor with Phone Number " + tutorId + " not found."));
+            tutor.getSchoolTutorsIds().remove(tutorId);
+            allUserDao.save(tutor);
+        }
+        for(UUID schoolId : schoolTutorsIds) {
+            AllUSer student = allUserDao.findById(schoolId).orElseThrow(() ->
+                    new IllegalArgumentException("Tutor with Phone Number " + schoolId + " not found."));
+            student.getTutorsIds().remove(schoolId);
+            allUserDao.save(student);
+        }
+
 
         allUserDao.deleteById(id);
     }

@@ -61,25 +61,32 @@ public class AppointmentService {
         return appointmentDao.save(updatedAppointment);
     }
 
-    public void deleteAppointment(Long id) {
-//        Optional<Appointment> existingAppointment = appointmentDao.findById(id);
-//        if (existingAppointment.isEmpty()) {
-//            throw new UserNotFoundException("Appointment with ID " + id + " not found.");
-//        }
-//
-//        AllUSer tutor = tutorDao.findById(existingAppointment.get().getTutorId())
-//                .orElseThrow(() -> new UserNotFoundException("Tutor not found for Appointment ID " + id));
-//        AllUSer student = tutorDao.findById(existingAppointment.get().getStudentId())
-//                .orElseThrow(() -> new UserNotFoundException("Student not found for Appointment ID " + id));
-//
-//
-//        tutor.getAppointmentIds().remove(id);
-//        student.getAppointmentIds().remove(id);
-//
-//        tutorDao.save(tutor);
-//        tutorDao.save(student);
-//        appointmentDao.deleteById(id);
+    public void deleteAppointment(UUID id) {
+        Optional<Appointment> existingAppointment = appointmentDao.findById(id);
+        if (existingAppointment.isEmpty()) {
+            throw new UserNotFoundException("Appointment with ID " + id + " not found.");
+        }
+
+        Appointment appointmentToDelete = existingAppointment.get();
+
+        // Tutor und Student anhand der Appointment-IDs finden
+        AllUSer tutor = tutorDao.findById(appointmentToDelete.getTutorId())
+                .orElseThrow(() -> new UserNotFoundException("Tutor not found for Appointment ID " + id));
+        AllUSer student = tutorDao.findById(appointmentToDelete.getStudentId())
+                .orElseThrow(() -> new UserNotFoundException("Student not found for Appointment ID " + id));
+
+        // Entfernen des Termin-IDs aus der Liste des Tutors und des Schülers
+        tutor.getAppointmentIds().remove(id);
+        student.getAppointmentIds().remove(id);
+
+        // Speichern der geänderten Tutor- und Schüler-Daten
+        tutorDao.save(tutor);
+        tutorDao.save(student);
+
+        // Löschen des Termins aus der Appointment-Datenbank
+        appointmentDao.deleteById(id);
     }
+
 
     public Appointment findById(UUID id) {
         return appointmentDao.findById(id).orElse(null);

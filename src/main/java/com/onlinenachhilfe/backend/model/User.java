@@ -1,6 +1,7 @@
 package com.onlinenachhilfe.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +33,14 @@ public class User {
     private String countryOfBirth;
     private String bankCode;
     private String iban;
-    private String description;
     private String picture;
+    private String password;
+    private String taxId;
+    private String hobbies;
+    private String zoomLink;
+    private String parentFirstName;
+    private String parentLastName;
+    private String schoolLevel;
     private boolean accountActive;
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private  List<UUID> tutorsIds = new ArrayList<>();

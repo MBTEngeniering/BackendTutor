@@ -21,12 +21,8 @@ public class AllUSer extends User {
     private String emailAddress;
     @Column(unique = true, nullable = false)
     private String phoneNumber;
-    private String password;
-    private String taxId;
-    private String hobbies;
-    private String zoomLink;
-    private String parentFirstName;
-    private String parentLastName;
-    private String schoolLevel;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
 
 }
