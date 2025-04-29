@@ -1,0 +1,26 @@
+package de.fairstudy.backend.model;
+public enum Subject {
+    MATH,
+    PHYSICS,
+    MATH_OS,
+    MATH_US,
+    FRENCH,
+    ENGLISH,
+    CHEMISTRY,
+    RELIGION,
+    BIOLOGY,
+    HISTORY,
+    GEOGRAPHY,
+    COMPUTER_SCIENCE,
+    ECONOMICS,
+    POLITICS,
+    PHILOSOPHY,
+    ART,
+    MUSIC,
+    SPORTS,
+    LATIN,
+    GERMAN,
+    SPANISH,
+    ITALIAN,
+
+}
