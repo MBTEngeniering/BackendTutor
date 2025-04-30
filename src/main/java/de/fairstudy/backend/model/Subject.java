@@ -22,5 +22,4 @@ public enum Subject {
     GERMAN,
     SPANISH,
     ITALIAN,
-
 }

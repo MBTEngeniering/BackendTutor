@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,14 @@ public class User {
     private String parentFirstName;
     private String parentLastName;
     private String schoolLevel;
-    private boolean accountActive;
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm:ss")
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm:ss")
+    private LocalDateTime lastLogin;
+    @Column(nullable = false)
+    private boolean accountActive = false;
+    @Column(nullable = false)
+    private boolean doiConfirmed = false;
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private  List<UUID> tutorsIds = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -56,5 +64,4 @@ public class User {
     private List<Date> availabilityTime = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<UUID> appointmentIds = new ArrayList<>();
-
 }

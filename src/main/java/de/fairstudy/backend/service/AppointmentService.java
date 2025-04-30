@@ -6,7 +6,7 @@ import de.fairstudy.backend.dao.AllUserDao;
 import de.fairstudy.backend.dto.AppointmentDTO;
 import de.fairstudy.backend.exception.UserNotFoundException;
 import de.fairstudy.backend.model.Appointment;
-import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.AllUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +26,8 @@ public class AppointmentService {
     }
 
     public Appointment createAppointment(AppointmentDTO appointmentDTO) {
-        Optional<AllUSer> tutor = tutorDao.findById(appointmentDTO.getTutorId());
-        Optional<AllUSer> student = tutorDao.findById(appointmentDTO.getStudentId());
+        Optional<AllUser> tutor = tutorDao.findById(appointmentDTO.getTutorId());
+        Optional<AllUser> student = tutorDao.findById(appointmentDTO.getStudentId());
 
         if (tutor.isEmpty()) {
             throw new UserNotFoundException("Tutor with ID " + appointmentDTO.getTutorId() + " not found.");
@@ -70,9 +70,9 @@ public class AppointmentService {
         Appointment appointmentToDelete = existingAppointment.get();
 
         // Tutor und Student anhand der Appointment-IDs finden
-        AllUSer tutor = tutorDao.findById(appointmentToDelete.getTutorId())
+        AllUser tutor = tutorDao.findById(appointmentToDelete.getTutorId())
                 .orElseThrow(() -> new UserNotFoundException("Tutor not found for Appointment ID " + id));
-        AllUSer student = tutorDao.findById(appointmentToDelete.getStudentId())
+        AllUser student = tutorDao.findById(appointmentToDelete.getStudentId())
                 .orElseThrow(() -> new UserNotFoundException("Student not found for Appointment ID " + id));
 
         // Entfernen des Termin-IDs aus der Liste des Tutors und des Schülers

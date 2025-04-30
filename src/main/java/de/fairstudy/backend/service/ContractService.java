@@ -4,7 +4,7 @@ import de.fairstudy.backend.Utils.UUIDGenerator;
 import de.fairstudy.backend.dao.AllUserDao;
 import de.fairstudy.backend.dao.ContractDao;
 import de.fairstudy.backend.dto.ContractDto;
-import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.AllUser;
 import de.fairstudy.backend.model.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +14,23 @@ import java.util.*;
 @Service
 public class ContractService {
 
-    @Autowired
-    private ContractDao contractDao;
+    private final ContractDao contractDao;
 
-    @Autowired
-    private AllUserDao allUserDao;
+    private final AllUserDao allUserDao;
+
+    public ContractService(ContractDao contractDao, AllUserDao allUserDao) {
+        this.contractDao = contractDao;
+        this.allUserDao = allUserDao;
+    }
 
     public ContractDto saveContract(ContractDto contractDto) {
-        Optional<AllUSer> optionalUser = allUserDao.findById(contractDto.getOwnerId());
+        Optional<AllUser> optionalUser = allUserDao.findById(contractDto.getOwnerId());
 
         if (optionalUser.isEmpty()) {
             throw new NoSuchElementException("User with ID " + contractDto.getOwnerId() + " not found");
         }
 
-        AllUSer user = optionalUser.get();
+        AllUser user = optionalUser.get();
         UUID uid= new UUIDGenerator().generateUUID();
         contractDto.setOwnerId(uid);
         Contract contract = convertToEntity(contractDto);
@@ -69,7 +72,7 @@ public class ContractService {
 
         if (optionalContract.isPresent()) {
             Contract contract = optionalContract.get();
-            Optional<AllUSer> optionalUser = allUserDao.findById(contract.getOwnerId());
+            Optional<AllUser> optionalUser = allUserDao.findById(contract.getOwnerId());
 
             optionalUser.ifPresent(user -> {
                 user.getContractIds().remove(id);

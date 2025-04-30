@@ -1,35 +1,34 @@
 package de.fairstudy.backend.service;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import de.fairstudy.backend.Utils.UUIDGenerator;
 import de.fairstudy.backend.dao.AllUserDao;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.exception.InvalidCredentialsException;
 import de.fairstudy.backend.exception.UserAlreadyExistsException;
 import de.fairstudy.backend.exception.UserNotFoundException;
-import de.fairstudy.backend.model.AllUSer;
-import de.fairstudy.backend.model.Appointment;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.fairstudy.backend.model.AllUser;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class AllUserService {
 
-
     private final ContractService contractService;
-    private AllUserDao allUserDao;
-    private PasswordEncryptionUtil passwordEncryptionUtil;
-    private AppointmentService appointmentService;
-@Autowired
-    public AllUserService(AllUserDao allUserDao, PasswordEncryptionUtil passwordEncryptionUtil, ContractService contractService) {
+    private final AllUserDao allUserDao;
+    private final PasswordEncryptionUtil passwordEncryptionUtil;
+    private final AppointmentService appointmentService;
+
+    public AllUserService(AllUserDao allUserDao, PasswordEncryptionUtil passwordEncryptionUtil, ContractService contractService, AppointmentService appointmentService) {
         this.allUserDao = allUserDao;
         this.passwordEncryptionUtil = passwordEncryptionUtil;
-    this.contractService = contractService;
-}
+        this.contractService = contractService;
+        this.appointmentService = appointmentService;
+    }
 
     public AllUserDto createUsers(AllUserDto allUserDto) {
         // Überprüfe, ob die E-Mail oder Telefonnummer bereits existiert
@@ -41,10 +40,10 @@ public class AllUserService {
             throw new UserAlreadyExistsException("Ein Tutor mit dieser Telefonnummer existiert bereits.");
         }
 
-        UUID uid= new UUIDGenerator().generateUUID();
+        UUID uid = new UUIDGenerator().generateUUID();
         allUserDto.setId(uid);
-        AllUSer allUSer = convertToEntity(allUserDto);
-        AllUSer savedTutor = allUserDao.save(allUSer);
+        AllUser allUSer = convertToEntity(allUserDto);
+        AllUser savedTutor = allUserDao.save(allUSer);
         return convertToDto(savedTutor);
     }
 
@@ -91,70 +90,74 @@ public class AllUserService {
     public List<AllUserDto> getUserByTaxId(String taxId) {
         return allUserDao.findByTaxId(taxId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
     public AllUserDto updateUsers(UUID id, AllUserDto allUserDto) {
 
-        Optional<AllUSer> optionalAllUSer = allUserDao.findById(id);
-        if (optionalAllUSer.isEmpty()) {
+        Optional<AllUser> optionalAllUser = allUserDao.findById(id);
+        if (optionalAllUser.isEmpty()) {
             throw new UserNotFoundException("User with ID " + id + " not found.");
         }
 
-        AllUSer existingUser =convertToEntity(allUserDto);
-        existingUser.setId(optionalAllUSer.get().getId());
-        AllUSer updatedTutor = allUserDao.save(existingUser);
+        AllUser existingUser =convertToEntity(allUserDto);
+        existingUser.setId(optionalAllUser.get().getId());
+        AllUser updatedTutor = allUserDao.save(existingUser);
 
         return convertToDto(updatedTutor);
     }
+
     public void deleteUsersByEmail(String email) {
-        AllUSer allUSer = allUserDao.findByEmailAddress(email).orElseThrow(() ->
+        AllUser allUSer = allUserDao.findByEmailAddress(email).orElseThrow(() ->
                 new IllegalArgumentException("Tutor with Email " + email + " not found."));
         List<UUID> contractIds = allUSer.getContractIds();
         List<UUID> appointmentIds = allUSer.getAppointmentIds();
-        for(UUID contractId : contractIds) {
+        for (UUID contractId : contractIds) {
             contractService.deleteContract(contractId);
         }
-        for(UUID appointmentId : appointmentIds) {
+        for (UUID appointmentId : appointmentIds) {
             appointmentService.deleteAppointment(appointmentId);
         }
         allUserDao.delete(allUSer);
     }
+
     public void deleteUsersByPhoneNumber(String phoneNumber) {
-        AllUSer tutor = allUserDao.findByPhoneNumber(phoneNumber).orElseThrow(() ->
+        AllUser tutor = allUserDao.findByPhoneNumber(phoneNumber).orElseThrow(() ->
                 new IllegalArgumentException("Tutor with Phone Number " + phoneNumber + " not found."));
         List<UUID> contractIds = tutor.getContractIds();
         List<UUID> appointmentIds = tutor.getAppointmentIds();
-        for(UUID contractId : contractIds) {
+        for (UUID contractId : contractIds) {
             contractService.deleteContract(contractId);
         }
-        for(UUID appointmentId : appointmentIds) {
+        for (UUID appointmentId : appointmentIds) {
             appointmentService.deleteAppointment(appointmentId);
         }
         allUserDao.delete(tutor);
     }
+
     public void deleteUsersById(UUID id) {
 
-        AllUSer allUSer = allUserDao.findById(id).orElseThrow(() ->
+        AllUser allUSer = allUserDao.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Tutor with Email " + id + " not found."));
 
-         List<UUID> tutorsIds = allUSer.getTutorsIds();
-       List<UUID> schoolTutorsIds = allUSer.getSchoolTutorsIds();
+        List<UUID> tutorsIds = allUSer.getTutorsIds();
+        List<UUID> schoolTutorsIds = allUSer.getSchoolTutorsIds();
 
         List<UUID> contractIds = allUSer.getContractIds();
         List<UUID> appointmentIds = allUSer.getAppointmentIds();
-        for(UUID contractId : contractIds) {
+        for (UUID contractId : contractIds) {
             contractService.deleteContract(contractId);
         }
-        for(UUID appointmentId : appointmentIds) {
+        for (UUID appointmentId : appointmentIds) {
             appointmentService.deleteAppointment(appointmentId);
         }
 
-        for(UUID tutorId : tutorsIds) {
-            AllUSer tutor = allUserDao.findById(tutorId).orElseThrow(() ->
+        for (UUID tutorId : tutorsIds) {
+            AllUser tutor = allUserDao.findById(tutorId).orElseThrow(() ->
                     new IllegalArgumentException("Tutor with Phone Number " + tutorId + " not found."));
             tutor.getSchoolTutorsIds().remove(tutorId);
             allUserDao.save(tutor);
         }
-        for(UUID schoolId : schoolTutorsIds) {
-            AllUSer student = allUserDao.findById(schoolId).orElseThrow(() ->
+        for (UUID schoolId : schoolTutorsIds) {
+            AllUser student = allUserDao.findById(schoolId).orElseThrow(() ->
                     new IllegalArgumentException("Tutor with Phone Number " + schoolId + " not found."));
             student.getTutorsIds().remove(schoolId);
             allUserDao.save(student);
@@ -165,8 +168,8 @@ public class AllUserService {
     }
 
 
-    private AllUSer convertToEntity(AllUserDto allUserDto) {
-        AllUSer allUSer = new AllUSer();
+    private AllUser convertToEntity(AllUserDto allUserDto) {
+        AllUser allUSer = new AllUser();
         allUSer.setSalutation(allUserDto.getSalutation());
         allUSer.setTitle(allUserDto.getTitle());
         allUSer.setLastName(allUserDto.getLastName());
@@ -187,18 +190,19 @@ public class AllUserService {
         allUSer.setDescription(allUserDto.getDescription());
         allUSer.setPicture(allUserDto.getPicture());
 
+        //@TODO: Dangerous!
         allUSer.setUserRoleIds(allUserDto.getUserRoleIds());
         allUSer.setTutorsIds(allUserDto.getTutorsIds());
         allUSer.setAppointmentIds(allUserDto.getAppointmentIds());
+
         allUSer.setFachIds(allUserDto.getFachIds());
         allUSer.setContractIds(allUserDto.getContractIds());
         allUSer.setSchoolTutorsIds(allUserDto.getSchoolTutorsIds());
-
         allUSer.setAccountActive(allUserDto.isAccountActive());
         allUSer.setTaxId(allUserDto.getTaxId());
         allUSer.setHobbies(allUserDto.getHobbies());
         allUSer.setZoomLink(allUserDto.getZoomLink());
-       allUSer.setAvailabilityTime(allUserDto.getAvailabilityTime());
+        allUSer.setAvailabilityTime(allUserDto.getAvailabilityTime());
         allUSer.setParentFirstName(allUserDto.getParentFirstName());
         allUSer.setParentLastName(allUserDto.getParentLastName());
         allUSer.setSchoolLevel(allUserDto.getSchoolLevel());
@@ -206,7 +210,7 @@ public class AllUserService {
         return allUSer;
     }
 
-    private AllUserDto convertToDto(AllUSer alleUser) {
+    public AllUserDto convertToDto(AllUser alleUser) {
         AllUserDto allUserDto = new AllUserDto();
         allUserDto.setSalutation(alleUser.getSalutation());
         allUserDto.setTitle(alleUser.getTitle());
@@ -247,9 +251,9 @@ public class AllUserService {
 
         return allUserDto;
     }
-    public AllUSer login(String emailOrPhoneNumber, String password) {
 
-        Optional<AllUSer> allUSerOptional;
+    public AllUser login(String emailOrPhoneNumber, String password) {
+        Optional<AllUser> allUSerOptional;
 
         if (emailOrPhoneNumber.contains("@")) {
             allUSerOptional = allUserDao.findByEmailAddress(emailOrPhoneNumber);
@@ -261,7 +265,7 @@ public class AllUserService {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
         }
 
-        AllUSer allUSer = allUSerOptional.get();
+        AllUser allUSer = allUSerOptional.get();
 
         if (password.equals(passwordEncryptionUtil.decrypt(allUSer.getPassword()))) {
             return allUSer;
@@ -269,6 +273,7 @@ public class AllUserService {
             throw new InvalidCredentialsException("E-Mail/Telfonnummer oder Passwort sind ungültig.");
         }
     }
+
     public List<AllUserDto> createUsersIgnoreErrors(List<AllUserDto> allUserDtoList) {
         return allUserDtoList.stream()
                 .map(allUserDto -> {
