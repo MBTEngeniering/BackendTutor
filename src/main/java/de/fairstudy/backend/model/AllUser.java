@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
+@Entity(name = "alluser")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AllUSer extends User {
+public class AllUser extends User {
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
@@ -23,6 +23,4 @@ public class AllUSer extends User {
     private String phoneNumber;
     @Column(columnDefinition = "TEXT")
     private String description;
-
-
 }
