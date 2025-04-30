@@ -99,6 +99,7 @@ public class AllUserService {
         }
 
         AllUSer existingUser =convertToEntity(allUserDto);
+        existingUser.setId(optionalAllUSer.get().getId());
         AllUSer updatedTutor = allUserDao.save(existingUser);
 
         return convertToDto(updatedTutor);

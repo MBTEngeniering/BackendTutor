@@ -11,5 +11,8 @@ import lombok.NoArgsConstructor;
 public class FachDto {
     private Long id;
     private Subject fach;
+    private String en;
+    private String de;
+    private String fr;
     private String translation;
 }
