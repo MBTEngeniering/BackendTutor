@@ -3,7 +3,7 @@ package de.fairstudy.backend.controller;
 import de.fairstudy.backend.dto.LoginRequestDto;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.exception.InvalidCredentialsException;
-import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,7 +99,7 @@ public class AllUserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
         try {
-            AllUSer student = allUserService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
+            AllUser student = allUserService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
             return ResponseEntity.ok(student);
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

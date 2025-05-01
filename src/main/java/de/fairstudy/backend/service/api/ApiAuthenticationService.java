@@ -2,7 +2,7 @@ package de.fairstudy.backend.service.api;
 
 import de.fairstudy.backend.auth.AuthenticationRequest;
 import de.fairstudy.backend.auth.AuthenticationResponse;
-import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

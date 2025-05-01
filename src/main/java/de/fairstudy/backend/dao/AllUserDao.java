@@ -1,6 +1,6 @@
 package de.fairstudy.backend.dao;
 
-import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.model.AllUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,20 +10,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AllUserDao extends JpaRepository<AllUSer, UUID> {
-    List<AllUSer> findByLastName(String lastName);
+public interface AllUserDao extends JpaRepository<AllUser, UUID> {
+    List<AllUser> findByLastName(String lastName);
 
-    List<AllUSer> findByFirstName(String firstName);
+    List<AllUser> findByFirstName(String firstName);
 
-    Optional<AllUSer> findByEmailAddress(String emailAddress);
+    Optional<AllUser> findByEmailAddress(String emailAddress);
 
-    List<AllUSer> findByStreetAndHouseNumberAndPostalCode(String street, String houseNumber, String postalCode);
+    List<AllUser> findByStreetAndHouseNumberAndPostalCode(String street, String houseNumber, String postalCode);
 
-    Optional<AllUSer> findByPhoneNumber(String phoneNumber);
+    Optional<AllUser> findByPhoneNumber(String phoneNumber);
 
-    List<AllUSer> findByDateOfBirth(LocalDate dateOfBirth);
+    List<AllUser> findByDateOfBirth(LocalDate dateOfBirth);
 
-    Optional<AllUSer> findByIban(String iban);
+    Optional<AllUser> findByIban(String iban);
 
-    List<AllUSer> findByTaxId(String parentFirstName);
+    List<AllUser> findByTaxId(String parentFirstName);
 }
