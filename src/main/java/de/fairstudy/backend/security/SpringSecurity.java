@@ -33,8 +33,6 @@ public class SpringSecurity {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-//    private final AuthenticationProvider authenticationProvider;
-
     private final UserDetailsService userDetailsService;
 
     private final JwtAuthenticationEntryPoint exceptionHandler;
@@ -68,31 +66,30 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChainApi(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                /*
-                .authorizeHttpRequests(request -> request.requestMatchers(
-                                new AntPathRequestMatcher("/api/public/**"),
-                                new AntPathRequestMatcher("/api/allusers/**")
-                                )
-                        .permitAll())
+
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**")
-                        .permitAll()
+                        // Public endpoints
+                        .requestMatchers(
+                                "/api/public/*",
+                                "/api/allusers/*",
+                                "/api/status/*",
+                                "/api/auth/authenticate",
+                                "/api/auth/**" // Allow all auth endpoints
+                        ).permitAll()
+                        // Secure all other API endpoints
                         .anyRequest()
                         .authenticated()
                 )
-                .exceptionHandling((exceptionHanding) -> exceptionHanding
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(exceptionHandler)
                         .accessDeniedHandler(accessDeniedHandler())
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((exceptionHandling) -> exceptionHandling
-                        .authenticationEntryPoint(exceptionHandler)
-                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                */
         ;
         return http.build();
     }

@@ -1,13 +1,14 @@
 package de.fairstudy.backend.service.api;
 
-import de.fairstudy.backend.auth.AuthenticationRequest;
 import de.fairstudy.backend.auth.AuthenticationResponse;
-import de.fairstudy.backend.model.AllUSer;
+import de.fairstudy.backend.dao.AllUserDao;
+import de.fairstudy.backend.dto.LoginRequestDto;
+import de.fairstudy.backend.model.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,22 +16,16 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class ApiAuthenticationService {
-    //@TODO: Remove repo, use userService instead
-//    private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-//    private final UserService userService;
-
     private final AllUserService allUserService;
+    private final AllUserDao allUserDao;
 
-
-    /*
-    public ApiAuthenticationService(JwtService jwtService, AuthenticationManager authenticationManager, UserService userService) {
+    /*public ApiAuthenticationService(JwtService jwtService, AuthenticationManager authenticationManager, AllUserService userService) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
-    }
-     */
+        this.allUserService = userService;
+    }*/
 
     /*
     public AuthenticationResponse register(RegisterRequest request) {
@@ -52,21 +47,53 @@ public class ApiAuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).build();
     }
      */
-/*
-    public AuthenticationResponse authenticate(de.fairstudy.backend.auth.AuthenticationRequest request) {
+
+    /* Backeup code for authentication
+    public AuthenticationResponse authenticate(LoginRequestDto request) {
         //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        AllUSer user;
+        AllUser user;
+        String jwtToken;
+        String time;
         try {
-            user = allUserService.login(request.getEmail(), request.getPassword());
+            user = allUserService.login(request.getEmailOrPhoneNumber(), request.getPassword());
+            jwtToken = jwtService.generateToken(allUserService.convertToDto(user));
+            time = jwtService.expirationTimeAsString(jwtToken);
+            user.setLastLogin(LocalDateTime.now());
+            allUserDao.save(user);
         } catch (Exception e) {
             throw e;
         }
 
-        var jwtToken = jwtService.generateToken(allUserService.convertToDto(user));
-        var time = jwtService.expirationTimeAsString(jwtToken);
-//        user.setLastLogin(LocalDateTime.now());
-//        userRepository.save(user);
         return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).username(user.getEmailAddress()).build();
-    }*/
+    }
+     */
+
+    public ResponseEntity<?> authenticate(LoginRequestDto request) {
+        //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+        AllUser user;
+        String jwtToken;
+        String time;
+        try {
+            user = allUserService.login(request.getEmailOrPhoneNumber(), request.getPassword());
+            jwtToken = jwtService.generateToken(allUserService.convertToDto(user));
+            time = jwtService.expirationTimeAsString(jwtToken);
+            user.setLastLogin(LocalDateTime.now());
+            allUserDao.save(user);
+        } catch (Exception e) {
+            throw e;
+        }
+
+// Generate JWT token
+
+        // Create HttpOnly cookie
+        ResponseCookie cookie = jwtService.generateJwtCookie(jwtToken);
+
+        // Return cookie in response
+        return ResponseEntity.ok()
+                .header("Set-Cookie", cookie.toString())
+                .body("Login successful!");
+        //return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).username(user.getEmailAddress()).build();
+    }
 }

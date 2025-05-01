@@ -1,11 +1,7 @@
 package de.fairstudy.backend.controller;
 
-import de.fairstudy.backend.dto.LoginRequestDto;
 import de.fairstudy.backend.dto.AllUserDto;
-import de.fairstudy.backend.exception.InvalidCredentialsException;
-import de.fairstudy.backend.model.AllUSer;
 import de.fairstudy.backend.service.AllUserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,20 +20,16 @@ public class AllUserController {
         this.allUserService = allUserService;
     }
 
-    @PostMapping
-    public AllUserDto createTutor(@RequestBody AllUserDto tutorDto) {
-        return allUserService.createUsers(tutorDto);
-    }
-
-
     @GetMapping
     public List<AllUserDto> getAllTutors() {
         return allUserService.getAllUsers();
     }
+
     @PutMapping("/{id}")
     public AllUserDto updateTutor(@PathVariable UUID id, @RequestBody AllUserDto tutorDto) {
         return allUserService.updateUsers(id, tutorDto); // Update method added
     }
+
     @GetMapping("/{id}")
     public Optional<AllUserDto> getTutorById(@PathVariable UUID id) {
         return allUserService.getUsersById(id);
@@ -62,6 +54,7 @@ public class AllUserController {
     public void deleteTutorByPhoneNumber(@PathVariable String phoneNumber) {
         allUserService.deleteUsersByPhoneNumber(phoneNumber);
     }
+
     @GetMapping("/lastname/{lastName}")
     public List<AllUserDto> getTutorsByLastName(@PathVariable String lastName) {
         return allUserService.getUsersByLastName(lastName);
@@ -96,15 +89,7 @@ public class AllUserController {
     public List<AllUserDto> getTutorsByTaxId(@PathVariable String taxId) {
         return allUserService.getUserByTaxId(taxId);
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
-        try {
-            AllUSer student = allUserService.login(loginRequest.getEmailOrPhoneNumber(), loginRequest.getPassword());
-            return ResponseEntity.ok(student);
-        } catch (InvalidCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
-    }
+
     @PostMapping("/batch-safe")
     public ResponseEntity<List<AllUserDto>> createTutorsIgnoreErrors(@RequestBody List<AllUserDto> tutorDtoList) {
         List<AllUserDto> createdTutors = allUserService.createUsersIgnoreErrors(tutorDtoList);

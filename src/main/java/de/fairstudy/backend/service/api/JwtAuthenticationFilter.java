@@ -5,12 +5,12 @@ import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -33,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService,
                                    @Qualifier("handlerExceptionResolver") HandlerExceptionResolver handlerExceptionResolver
-                                   ) {
+    ) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.exceptionResolver = handlerExceptionResolver;
@@ -42,6 +43,55 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+        String jwt = null;
+
+        String userEmail;
+        try {
+            // Extract JWT from cookie
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                jwt = Arrays.stream(cookies).filter(cookie -> "jwt".equals(cookie.getName())).findFirst().map(Cookie::getValue).orElse(null);
+            }
+            if (jwt == null) {
+                filterChain.doFilter(request, response);
+            }
+
+
+            jwtService.isTokenExpired(jwt);
+            userEmail = jwtService.extractUsername(jwt);
+        } catch (ExpiredJwtException | WeakKeyException ex) {
+            final String expiredMsg = ex.getMessage();
+            logger.warn(expiredMsg);
+            exceptionResolver.resolveException(request, response, null, ex);
+            return;
+        } catch (SignatureException ex) {
+            final String expiredMsg = ex.getMessage();
+            logger.warn(expiredMsg);
+            exceptionResolver.resolveException(request, response, null, ex);
+            return;
+        }
+
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    //    @Override
+    protected void doFilterInternal2(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
@@ -49,8 +99,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-//    @Override
-    protected void doFilterInternal2(
+    //    @Override
+    protected void doFilterInternal3(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain

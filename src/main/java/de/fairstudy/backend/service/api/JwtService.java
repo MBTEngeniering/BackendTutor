@@ -3,11 +3,13 @@ package de.fairstudy.backend.service.api;
 import de.fairstudy.backend.dto.AllUserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +61,20 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        String username;
+        try {
+            // First check
+            Jwts.parser().verifyWith(getSignInKey())
+                    .build()
+                    .parseSignedClaims(token).getPayload();
+
+            // Second check
+            username = extractUsername(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+
+        // 3rd check - Check if the token is valid and not expired
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
@@ -82,5 +97,16 @@ public class JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    // Create HttpOnly cookie
+    public ResponseCookie generateJwtCookie(String token) {
+        return ResponseCookie.from("jwt", token)
+                .httpOnly(true) // Prevent XSS
+                .secure(false)   // Send only over HTTPS
+                .path("/")      // Accessible across all paths
+                .maxAge(TTL / 1000) // Cookie expiration (seconds)
+                .sameSite("Lax") // CSRF protection
+                .build();
     }
 }
