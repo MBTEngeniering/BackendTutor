@@ -1,6 +1,8 @@
 package de.fairstudy.backend.controller;
 
 import de.fairstudy.backend.dto.AllUserDto;
+import de.fairstudy.backend.exception.InvalidCredentialsException;
+import de.fairstudy.backend.model.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,12 @@ public class AllUserController {
     public AllUserController(AllUserService allUserService) {
         this.allUserService = allUserService;
     }
+
+    @PostMapping
+    public AllUserDto createTutor(@RequestBody AllUserDto tutorDto) {
+        return allUserService.createUsers(tutorDto);
+    }
+
 
     @GetMapping
     public List<AllUserDto> getAllTutors() {
@@ -89,7 +97,6 @@ public class AllUserController {
     public List<AllUserDto> getTutorsByTaxId(@PathVariable String taxId) {
         return allUserService.getUserByTaxId(taxId);
     }
-
     @PostMapping("/batch-safe")
     public ResponseEntity<List<AllUserDto>> createTutorsIgnoreErrors(@RequestBody List<AllUserDto> tutorDtoList) {
         List<AllUserDto> createdTutors = allUserService.createUsersIgnoreErrors(tutorDtoList);
