@@ -1,8 +1,6 @@
 package de.fairstudy.backend.controller;
 
 import de.fairstudy.backend.dto.AllUserDto;
-import de.fairstudy.backend.exception.InvalidCredentialsException;
-import de.fairstudy.backend.model.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

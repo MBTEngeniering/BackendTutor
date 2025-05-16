@@ -1,6 +1,7 @@
-package de.fairstudy.backend.model;
+package de.fairstudy.backend.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import de.fairstudy.backend.model.enums.Subject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

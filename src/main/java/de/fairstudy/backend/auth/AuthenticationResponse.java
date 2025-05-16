@@ -1,6 +1,6 @@
 package de.fairstudy.backend.auth;
 
-import de.fairstudy.backend.model.AllUser;
+import de.fairstudy.backend.entity.AllUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

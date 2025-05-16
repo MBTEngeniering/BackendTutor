@@ -1,8 +1,8 @@
 package de.fairstudy.backend.service;
 
-import de.fairstudy.backend.dao.FachDao;
-import de.fairstudy.backend.model.Fach;
-import de.fairstudy.backend.model.Subject;
+import de.fairstudy.backend.repository.FachDao;
+import de.fairstudy.backend.entity.Fach;
+import de.fairstudy.backend.model.enums.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

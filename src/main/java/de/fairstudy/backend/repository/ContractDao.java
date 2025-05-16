@@ -1,6 +1,6 @@
-package de.fairstudy.backend.dao;
+package de.fairstudy.backend.repository;
 
-import de.fairstudy.backend.model.Contract;
+import de.fairstudy.backend.entity.Contract;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

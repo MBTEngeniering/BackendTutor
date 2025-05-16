@@ -1,7 +1,7 @@
-package de.fairstudy.backend.dao;
+package de.fairstudy.backend.repository;
 
-import de.fairstudy.backend.model.UserRole;
-import de.fairstudy.backend.model.Role;
+import de.fairstudy.backend.entity.UserRole;
+import de.fairstudy.backend.model.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

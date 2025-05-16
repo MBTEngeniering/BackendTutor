@@ -1,4 +1,7 @@
-package de.fairstudy.backend.model;
+package de.fairstudy.backend.entity;
+
+import de.fairstudy.backend.model.enums.Subject;
+
 public class SubjectTranslator {
 
     public static String translateFrench(Subject subject) {

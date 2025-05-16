@@ -1,6 +1,6 @@
 package de.fairstudy.backend.dto;
 
-import de.fairstudy.backend.model.Subject;
+import de.fairstudy.backend.model.enums.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

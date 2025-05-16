@@ -1,4 +1,4 @@
-package de.fairstudy.backend.model;
+package de.fairstudy.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;

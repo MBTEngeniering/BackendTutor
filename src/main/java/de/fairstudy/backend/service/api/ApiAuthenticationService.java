@@ -1,9 +1,9 @@
 package de.fairstudy.backend.service.api;
 
 import de.fairstudy.backend.auth.AuthenticationResponse;
-import de.fairstudy.backend.dao.AllUserDao;
+import de.fairstudy.backend.repository.AllUserDao;
 import de.fairstudy.backend.dto.LoginRequestDto;
-import de.fairstudy.backend.model.AllUser;
+import de.fairstudy.backend.entity.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;

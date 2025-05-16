@@ -7,7 +7,7 @@ import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.dto.LoginRequestDto;
 import de.fairstudy.backend.event.UserLoginEvent;
 import de.fairstudy.backend.exception.InvalidCredentialsException;
-import de.fairstudy.backend.model.AllUser;
+import de.fairstudy.backend.entity.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import de.fairstudy.backend.service.api.ApiAuthenticationService;
 import io.jsonwebtoken.ExpiredJwtException;

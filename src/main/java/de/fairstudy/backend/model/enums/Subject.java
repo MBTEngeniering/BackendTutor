@@ -1,4 +1,4 @@
-package de.fairstudy.backend.model;
+package de.fairstudy.backend.model.enums;
 public enum Subject {
     MATH,
     PHYSICS,

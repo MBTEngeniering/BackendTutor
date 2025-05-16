@@ -1,8 +1,8 @@
 package de.fairstudy.backend.service;
 
-import de.fairstudy.backend.dao.UserRoleDao;
-import de.fairstudy.backend.model.UserRole;
-import de.fairstudy.backend.model.Role;
+import de.fairstudy.backend.repository.UserRoleDao;
+import de.fairstudy.backend.entity.UserRole;
+import de.fairstudy.backend.model.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

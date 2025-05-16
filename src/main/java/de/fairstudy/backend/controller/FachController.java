@@ -1,13 +1,12 @@
 package de.fairstudy.backend.controller;
 
 import de.fairstudy.backend.dto.FachDto;
-import de.fairstudy.backend.model.Fach;
-import de.fairstudy.backend.model.Subject;
+import de.fairstudy.backend.entity.Fach;
+import de.fairstudy.backend.model.enums.Subject;
 import de.fairstudy.backend.service.FachService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;

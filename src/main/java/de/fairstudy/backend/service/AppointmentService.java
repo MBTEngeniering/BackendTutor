@@ -1,12 +1,12 @@
 package de.fairstudy.backend.service;
 
 import de.fairstudy.backend.Utils.UUIDGenerator;
-import de.fairstudy.backend.dao.AllUserDao;
-import de.fairstudy.backend.dao.AppointmentDao;
+import de.fairstudy.backend.repository.AllUserDao;
+import de.fairstudy.backend.repository.AppointmentDao;
 import de.fairstudy.backend.dto.AppointmentDTO;
 import de.fairstudy.backend.exception.UserNotFoundException;
-import de.fairstudy.backend.model.AllUser;
-import de.fairstudy.backend.model.Appointment;
+import de.fairstudy.backend.entity.AllUser;
+import de.fairstudy.backend.entity.Appointment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

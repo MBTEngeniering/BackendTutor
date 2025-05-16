@@ -1,8 +1,8 @@
 package de.fairstudy.backend.controller;
 
 import de.fairstudy.backend.dto.UserRoleDto;
-import de.fairstudy.backend.model.Role;
-import de.fairstudy.backend.model.UserRole;
+import de.fairstudy.backend.model.enums.Role;
+import de.fairstudy.backend.entity.UserRole;
 import de.fairstudy.backend.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

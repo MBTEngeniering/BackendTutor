@@ -1,7 +1,7 @@
 package de.fairstudy.backend.service.api;
 
 import de.fairstudy.backend.dto.AllUserDto;
-import de.fairstudy.backend.model.UserRole;
+import de.fairstudy.backend.entity.UserRole;
 import de.fairstudy.backend.service.AllUserService;
 import de.fairstudy.backend.service.UserRoleService;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

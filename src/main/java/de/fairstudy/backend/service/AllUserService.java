@@ -1,12 +1,12 @@
 package de.fairstudy.backend.service;
 
 import de.fairstudy.backend.Utils.UUIDGenerator;
-import de.fairstudy.backend.dao.AllUserDao;
+import de.fairstudy.backend.repository.AllUserDao;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.exception.InvalidCredentialsException;
 import de.fairstudy.backend.exception.UserAlreadyExistsException;
 import de.fairstudy.backend.exception.UserNotFoundException;
-import de.fairstudy.backend.model.AllUser;
+import de.fairstudy.backend.entity.AllUser;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

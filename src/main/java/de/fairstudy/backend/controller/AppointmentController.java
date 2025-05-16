@@ -1,7 +1,7 @@
 package de.fairstudy.backend.controller;
  
 import de.fairstudy.backend.dto.AppointmentDTO;
-import de.fairstudy.backend.model.Appointment;
+import de.fairstudy.backend.entity.Appointment;
 import de.fairstudy.backend.service.AppointmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

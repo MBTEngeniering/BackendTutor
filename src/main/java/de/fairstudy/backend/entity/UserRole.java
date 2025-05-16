@@ -1,5 +1,6 @@
-package de.fairstudy.backend.model;
+package de.fairstudy.backend.entity;
 
+import de.fairstudy.backend.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

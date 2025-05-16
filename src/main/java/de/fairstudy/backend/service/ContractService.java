@@ -1,12 +1,11 @@
 package de.fairstudy.backend.service;
 
 import de.fairstudy.backend.Utils.UUIDGenerator;
-import de.fairstudy.backend.dao.AllUserDao;
-import de.fairstudy.backend.dao.ContractDao;
+import de.fairstudy.backend.repository.AllUserDao;
+import de.fairstudy.backend.repository.ContractDao;
 import de.fairstudy.backend.dto.ContractDto;
-import de.fairstudy.backend.model.AllUser;
-import de.fairstudy.backend.model.Contract;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.fairstudy.backend.entity.AllUser;
+import de.fairstudy.backend.entity.Contract;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
