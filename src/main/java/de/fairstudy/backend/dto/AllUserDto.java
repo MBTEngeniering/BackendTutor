@@ -1,6 +1,9 @@
 package de.fairstudy.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +26,11 @@ public class AllUserDto {
     private String lastName;
     private String firstName;
     private String emailAddress;
+
+    @JsonIgnore
+    @JsonProperty(access = Access.WRITE_ONLY, value = "password")
     private String password;
+
     private String street;
     private String houseNumber;
     private String postalCode;
@@ -58,6 +65,4 @@ public class AllUserDto {
     private String taxId;
     private String hobbies;
     private String zoomLink;
-
-
 }

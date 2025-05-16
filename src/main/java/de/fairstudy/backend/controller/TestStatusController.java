@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class for testing purposes
+ */
 @RestController
 @RequestMapping("/api/statuss")
 public class TestStatusController {
@@ -31,17 +34,19 @@ public class TestStatusController {
         return filterUsersByRole(2L);
     }
 
-    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ENTERPRISE"})
     @GetMapping("/entreprise")
     public List<AllUserDto> getEntreprises() {
         return filterUsersByRole(3L);
     }
 
+    @Secured({"ROLE_ADMIN"})
     @GetMapping("/admins")
     public List<AllUserDto> getAdmins() {
         return filterUsersByRole(5L);
     }
 
+    @Secured({"ROLE_SUPPORT"})
     @GetMapping("/support")
     public List<AllUserDto> getSupporters() {
         return filterUsersByRole(6L);

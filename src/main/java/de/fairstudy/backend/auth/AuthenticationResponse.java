@@ -1,5 +1,6 @@
 package de.fairstudy.backend.auth;
 
+import de.fairstudy.backend.model.AllUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +17,8 @@ public class AuthenticationResponse {
     private String expirationTime;
 
     private String username;
+
+    private String cookie;
+
+    private AllUser user;
 }

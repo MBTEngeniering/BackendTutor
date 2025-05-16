@@ -1,4 +1,6 @@
 package de.fairstudy.backend.model;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
 public class Fach {
 
     @Id
@@ -19,9 +22,7 @@ public class Fach {
     private Subject fach;
 
     private String en;
-
     private String de;
-
     private String fr;
     /*
     private String es;

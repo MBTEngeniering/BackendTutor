@@ -66,18 +66,13 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChainApi(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers(new AntPathRequestMatcher("/api/public/**"))
+                                .permitAll())
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        // Public endpoints
-                        .requestMatchers(
-                                "/api/public/*",
-                                "/api/allusers/*",
-                                "/api/status/*",
-                                "/api/auth/authenticate",
-                                "/api/auth/**" // Allow all auth endpoints
-                        ).permitAll()
-                        // Secure all other API endpoints
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 )

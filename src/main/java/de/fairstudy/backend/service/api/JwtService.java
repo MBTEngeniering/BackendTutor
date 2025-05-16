@@ -1,10 +1,7 @@
 package de.fairstudy.backend.service.api;
 
 import de.fairstudy.backend.dto.AllUserDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
@@ -39,7 +36,11 @@ public class JwtService {
     }
 
     public String generateToken(AllUserDto userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        // Generate token with empty extra claims
+        var hm = new HashMap<String, Object>();
+        hm.put("userRoleIds", userDetails.getUserRoleIds().toString());
+        hm.put("userId", userDetails.getId());
+        return generateToken(hm, userDetails);
     }
 
     public String expirationTimeAsString(String token) {
@@ -58,6 +59,19 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + TTL))
                 .signWith(getSignInKey(), Jwts.SIG.HS512)
                 .compact();
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser().verifyWith(getSignInKey())
+                    .build()
+                    .parseSignedClaims(token).getPayload();
+        } catch (JwtException | IllegalArgumentException e) {
+            // Token is invalid
+            throw e;
+        }
+
+        return true;
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

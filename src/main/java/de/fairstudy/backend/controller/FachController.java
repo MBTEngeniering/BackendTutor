@@ -7,6 +7,7 @@ import de.fairstudy.backend.service.FachService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -51,6 +52,7 @@ public class FachController {
     }
 
     @GetMapping("/trans/{lang}")
+//    @Secured({"ROLE_ENTERPRISE", "ROLE_ADMIN"})
     public ResponseEntity<?> getFachByLang(@PathVariable String lang) {
         lang = lang.toUpperCase().charAt(0) + lang.substring(1).toLowerCase();
 

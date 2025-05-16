@@ -1,6 +1,7 @@
 package de.fairstudy.backend.service.api;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.servlet.FilterChain;
@@ -29,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    private HandlerExceptionResolver exceptionResolver;
+    private final HandlerExceptionResolver exceptionResolver;
 
     @Autowired
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService,
@@ -58,20 +59,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             if (jwt == null) {
                 filterChain.doFilter(request, response);
+                return;
             }
 
+            if(!jwtService.isTokenValid(jwt)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             jwtService.isTokenExpired(jwt);
+
             userEmail = jwtService.extractUsername(jwt);
         } catch (ExpiredJwtException | WeakKeyException ex) {
             final String expiredMsg = ex.getMessage();
             logger.warn(expiredMsg);
-            exceptionResolver.resolveException(request, response, null, ex);
+            filterChain.doFilter(request, response);
             return;
         } catch (SignatureException ex) {
             final String expiredMsg = ex.getMessage();
             logger.warn(expiredMsg);
-            exceptionResolver.resolveException(request, response, null, ex);
+            filterChain.doFilter(request, response);
+            return;
+        } catch (MalformedJwtException ex) {
+            logger.warn(ex.getMessage());
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -90,6 +101,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+
+    // BERARER METHOD!
     //    @Override
     protected void doFilterInternal2(
             @NonNull HttpServletRequest request,

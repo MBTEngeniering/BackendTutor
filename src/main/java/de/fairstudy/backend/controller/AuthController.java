@@ -1,5 +1,7 @@
 package de.fairstudy.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.fairstudy.backend.auth.AuthenticationResponse;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.dto.LoginRequestDto;
@@ -57,10 +59,17 @@ public class AuthController {
     public ResponseEntity<?> authenticate(@RequestBody LoginRequestDto request) {
         try {
             var response = apiAuthenticationService.authenticate(request);
-            //eventPublisher.publishEvent(new UserLoginEvent(response.getUsername()));
+            eventPublisher.publishEvent(new UserLoginEvent(response.getUsername()));
 
-            return response;
-            //return ResponseEntity.ok(response);
+            var user = response.getUser();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            String json = mapper.writeValueAsString(user);
+
+            // Return cookie in response
+            return ResponseEntity.ok()
+                    .header("Set-Cookie", response.getCookie())
+                    .body(json);
         } catch (ExpiredJwtException bce) {
             AuthenticationResponse exp = AuthenticationResponse.builder().token("Token expired").build();
             return ResponseEntity.ok(exp);

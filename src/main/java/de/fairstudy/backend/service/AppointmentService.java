@@ -1,12 +1,12 @@
 package de.fairstudy.backend.service;
 
 import de.fairstudy.backend.Utils.UUIDGenerator;
-import de.fairstudy.backend.dao.AppointmentDao;
 import de.fairstudy.backend.dao.AllUserDao;
+import de.fairstudy.backend.dao.AppointmentDao;
 import de.fairstudy.backend.dto.AppointmentDTO;
 import de.fairstudy.backend.exception.UserNotFoundException;
-import de.fairstudy.backend.model.Appointment;
 import de.fairstudy.backend.model.AllUser;
+import de.fairstudy.backend.model.Appointment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class AppointmentService {
             throw new UserNotFoundException("Student with ID " + appointmentDTO.getStudentId() + " not found.");
         }
 
-        UUID uid= new UUIDGenerator().generateUUID();
+        UUID uid = new UUIDGenerator().generateUUID();
         appointmentDTO.setId(uid);
         Appointment appointment = convertDtoToEntity(appointmentDTO);
         Appointment savedAppointment = appointmentDao.save(appointment);
@@ -50,6 +50,7 @@ public class AppointmentService {
 
         return savedAppointment;
     }
+
     public Appointment updateAppointment(UUID id, AppointmentDTO updatedAppointmentDTO) {
         Optional<Appointment> existingAppointment = appointmentDao.findById(id);
         if (existingAppointment.isEmpty()) {

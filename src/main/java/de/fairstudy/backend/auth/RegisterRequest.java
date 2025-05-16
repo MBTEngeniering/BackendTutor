@@ -10,5 +10,7 @@ public class RegisterRequest {
     private String lastname;
     private String email;
     private String password;
+
+    /** Security risk: role should not be in register */
     private String role;
 }
