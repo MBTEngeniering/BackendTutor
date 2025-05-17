@@ -21,4 +21,6 @@ public class AuthenticationResponse {
     private String cookie;
 
     private AllUser user;
+
+    private Long timestamp;
 }

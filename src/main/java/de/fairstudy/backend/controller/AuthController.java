@@ -5,19 +5,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.fairstudy.backend.auth.AuthenticationResponse;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.dto.LoginRequestDto;
+import de.fairstudy.backend.entity.AllUser;
 import de.fairstudy.backend.event.UserLoginEvent;
 import de.fairstudy.backend.exception.InvalidCredentialsException;
-import de.fairstudy.backend.entity.AllUser;
 import de.fairstudy.backend.service.AllUserService;
 import de.fairstudy.backend.service.api.ApiAuthenticationService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -62,6 +59,7 @@ public class AuthController {
             eventPublisher.publishEvent(new UserLoginEvent(response.getUsername()));
 
             var user = response.getUser();
+            user.setTimestamp(response.getTimestamp() / 1000L); // Convert to seconds
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(user);
@@ -72,9 +70,21 @@ public class AuthController {
                     .body(json);
         } catch (ExpiredJwtException bce) {
             AuthenticationResponse exp = AuthenticationResponse.builder().token("Token expired").build();
-            return ResponseEntity.ok(exp);
+            return ResponseEntity.badRequest().body(exp);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body("Login failed: " + ex.getMessage());
+        }
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        try {
+            var response = apiAuthenticationService.logout();
+            return ResponseEntity.ok()
+                    .header("Set-Cookie", response.getCookie())
+                    .body("Logout successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

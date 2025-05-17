@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -52,7 +51,7 @@ public class SpringSecurity {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
+//    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -60,14 +59,15 @@ public class SpringSecurity {
         return authProvider;
     }
 
-
     @Bean
-    @Order(1)
     public SecurityFilterChain securityFilterChainApi(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers(new AntPathRequestMatcher("/api/public/**"))
+                        request.requestMatchers(
+                                        new AntPathRequestMatcher("/api/public/**"),
+                                        new AntPathRequestMatcher("/api/fach/**/**", "GET")
+                                )
                                 .permitAll())
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
@@ -84,8 +84,7 @@ public class SpringSecurity {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-        ;
+                );
         return http.build();
     }
 

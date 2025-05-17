@@ -1,9 +1,9 @@
 package de.fairstudy.backend.service.api;
 
 import de.fairstudy.backend.auth.AuthenticationResponse;
-import de.fairstudy.backend.repository.AllUserDao;
 import de.fairstudy.backend.dto.LoginRequestDto;
 import de.fairstudy.backend.entity.AllUser;
+import de.fairstudy.backend.repository.AllUserDao;
 import de.fairstudy.backend.service.AllUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -64,36 +64,34 @@ public class ApiAuthenticationService {
      */
 
     public AuthenticationResponse authenticate(LoginRequestDto request) {
-        //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
         AllUser user;
         String jwtToken;
         String time;
         ResponseCookie cookie = null;
-        try {
-            user = allUserService.login(request.getEmailOrPhoneNumber(), request.getPassword());
+        user = allUserService.login(request.getEmailOrPhoneNumber(), request.getPassword());
 
-            jwtToken = jwtService.generateToken(allUserService.convertToDto(user));
-            time = jwtService.expirationTimeAsString(jwtToken);
-            user.setLastLogin(LocalDateTime.now());
-            allUserDao.save(user);
+        jwtToken = jwtService.generateToken(allUserService.convertToDto(user));
 
-//            var authenticationResponse = new AuthenticationResponse();
-//            authenticationResponse.setToken(jwtToken);
-//            authenticationResponse.setExpirationTime(time);
-//            authenticationResponse.setUsername(user.getEmailAddress());
-            
-             cookie = jwtService.generateJwtCookie(jwtToken);
-//            authenticationResponse.setCookie(cookie.toString());
-        } catch (Exception e) {
-            throw e;
-        }
-        
-        return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).username(user.getEmailAddress()).cookie(cookie.toString()).user(user).build();
+        time = jwtService.expirationTimeAsString(jwtToken);
+        var timestamp = jwtService.expirationDate().getTime();
+
+        user.setLastLogin(LocalDateTime.now());
+        allUserDao.save(user);
+
+        cookie = jwtService.generateJwtCookie(jwtToken);
+
+        return AuthenticationResponse.builder().token(jwtToken).expirationTime(time).username(user.getEmailAddress()).cookie(cookie.toString()).user(user).timestamp(timestamp).build();
     }
 
-    public String logout() {
-        ResponseCookie cookie = jwtService.generateJwtCookie(null);
-        return cookie.toString();
+    public AuthenticationResponse logout() {
+        var cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true) // Prevent XSS
+                .secure(false)   // Send only over HTTPS
+                .path("/")      // Accessible across all paths
+                .maxAge(0) // Cookie expiration (seconds)
+                .sameSite("Lax") // CSRF protection
+                .build();
+
+        return AuthenticationResponse.builder().cookie(cookie.toString()).build();
     }
 }

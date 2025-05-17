@@ -3,6 +3,7 @@ package de.fairstudy.backend.controller;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.service.AllUserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -37,6 +38,7 @@ public class AllUserController {
     }
 
     @GetMapping("/{id}")
+    @Secured({"ROLE_STUDENT", "ROLE_ADMIN"})
     public Optional<AllUserDto> getTutorById(@PathVariable UUID id) {
         return allUserService.getUsersById(id);
     }

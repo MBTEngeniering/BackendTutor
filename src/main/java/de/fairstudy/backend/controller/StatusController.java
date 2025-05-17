@@ -3,6 +3,7 @@ package de.fairstudy.backend.controller;
 import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.service.AllUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,16 +16,18 @@ import java.util.stream.Collectors;
 public class StatusController {
 
     private final AllUserService allUserService;
-@Autowired
+
     public StatusController(AllUserService allUserService) {
         this.allUserService = allUserService;
     }
 
+    @Secured({"ROLE_STUDENT", "ROLE_ADMIN"})
     @GetMapping("/students")
     public List<AllUserDto> getStudents() {
         return filterUsersByRole(1L);
     }
 
+    @Secured({"ROLE_STUDENT", "ROLE_ADMIN"})
     @GetMapping("/tutors")
     public List<AllUserDto> getTutors() {
         return filterUsersByRole(2L);

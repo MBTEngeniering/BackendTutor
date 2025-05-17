@@ -62,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            if(!jwtService.isTokenValid(jwt)) {
+            if(!jwtService.isUsernameValid(jwt)) {
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -88,7 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isUsernameValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -102,8 +102,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-    // BERARER METHOD!
+    // BEARER METHOD!
     //    @Override
+    /*
     protected void doFilterInternal2(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
@@ -146,7 +147,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isUsernameValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -158,4 +159,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+     */
 }

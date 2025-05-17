@@ -7,6 +7,7 @@ import de.fairstudy.backend.service.FachService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/fach")
+@Secured({"ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN"})
 public class FachController {
 
     private final FachService fachService;
@@ -26,7 +28,6 @@ public class FachController {
     public FachController(FachService fachService) {
         this.fachService = fachService;
     }
-
 
     private Fach convertDtoToEntity(FachDto fachDto) {
         Fach fach = new Fach();
@@ -80,6 +81,7 @@ public class FachController {
 
 
     @PostMapping
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<FachDto> createFach(@RequestBody FachDto fachDto) {
         Fach fach = convertDtoToEntity(fachDto); // DTO -> Entity
         Fach createdFach = fachService.createFach(fach.getFach());
@@ -87,6 +89,7 @@ public class FachController {
     }
 
     @DeleteMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Void> deleteFachById(@PathVariable Long id) {
         fachService.deleteFachById(id);
         return ResponseEntity.noContent().build();
@@ -108,7 +111,7 @@ public class FachController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<FachDto>> getAllFaecher() {
         List<Fach> faecher = fachService.getAllFaecher();
         List<FachDto> fachDtos = faecher.stream()

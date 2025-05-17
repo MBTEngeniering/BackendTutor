@@ -38,8 +38,9 @@ public class JwtService {
     public String generateToken(AllUserDto userDetails) {
         // Generate token with empty extra claims
         var hm = new HashMap<String, Object>();
-        hm.put("userRoleIds", userDetails.getUserRoleIds().toString());
-        hm.put("userId", userDetails.getId());
+//        hm.put("userRoleIds", userDetails.getUserRoleIds().toString());
+//        hm.put("userId", userDetails.getId());
+//        hm.put("timestamp", expirationDate().getTime());
         return generateToken(hm, userDetails);
     }
 
@@ -56,12 +57,16 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getEmailAddress())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + TTL))
+                .expiration(expirationDate())
                 .signWith(getSignInKey(), Jwts.SIG.HS512)
                 .compact();
     }
 
-    public boolean isTokenValid(String token) {
+    public Date expirationDate() {
+        return new Date(System.currentTimeMillis() + TTL);
+    }
+
+    public boolean isUsernameValid(String token) {
         try {
             Jwts.parser().verifyWith(getSignInKey())
                     .build()
@@ -74,14 +79,9 @@ public class JwtService {
         return true;
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isUsernameValid(String token, UserDetails userDetails) {
         String username;
         try {
-            // First check
-            Jwts.parser().verifyWith(getSignInKey())
-                    .build()
-                    .parseSignedClaims(token).getPayload();
-
             // Second check
             username = extractUsername(token);
         } catch (JwtException | IllegalArgumentException e) {
