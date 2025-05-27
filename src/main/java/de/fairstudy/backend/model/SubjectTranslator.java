@@ -1,4 +1,4 @@
-package de.fairstudy.backend.entity;
+package de.fairstudy.backend.model;
 
 import de.fairstudy.backend.model.enums.Subject;
 

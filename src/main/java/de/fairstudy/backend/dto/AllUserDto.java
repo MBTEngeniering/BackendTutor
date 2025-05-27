@@ -27,8 +27,9 @@ public class AllUserDto {
     private String firstName;
     private String emailAddress;
 
-    @JsonIgnore
-    @JsonProperty(access = Access.WRITE_ONLY, value = "password")
+    //@TODO: NEver show password in DTOs, use a different approach for authentication
+//    @JsonIgnore
+//    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     private String street;

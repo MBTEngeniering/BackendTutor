@@ -168,46 +168,46 @@ public class AllUserService {
     }
 
 
-    private AllUser convertToEntity(AllUserDto AllUserDto) {
-        AllUser AllUser = new AllUser();
-        AllUser.setSalutation(AllUserDto.getSalutation());
-        AllUser.setTitle(AllUserDto.getTitle());
-        AllUser.setLastName(AllUserDto.getLastName());
-        AllUser.setFirstName(AllUserDto.getFirstName());
-        AllUser.setEmailAddress(AllUserDto.getEmailAddress());
-        AllUser.setPassword(passwordEncryptionUtil.encrypt(AllUserDto.getPassword()));
-        AllUser.setStreet(AllUserDto.getStreet());
-        AllUser.setHouseNumber(AllUserDto.getHouseNumber());
-        AllUser.setPostalCode(AllUserDto.getPostalCode());
-        AllUser.setPhoneNumber(AllUserDto.getPhoneNumber());
-        AllUser.setCity(AllUserDto.getCity());
-        AllUser.setCountry(AllUserDto.getCountry());
-        AllUser.setDateOfBirth(AllUserDto.getDateOfBirth());
-        AllUser.setPlaceOfBirth(AllUserDto.getPlaceOfBirth());
-        AllUser.setCountryOfBirth(AllUserDto.getCountryOfBirth());
-        AllUser.setBankCode(AllUserDto.getBankCode());
-        AllUser.setIban(AllUserDto.getIban());
-        AllUser.setDescription(AllUserDto.getDescription());
-        AllUser.setPicture(AllUserDto.getPicture());
+    private AllUser convertToEntity(AllUserDto allUserDto) {
+        AllUser allUser = new AllUser();
+        allUser.setSalutation(allUserDto.getSalutation());
+        allUser.setTitle(allUserDto.getTitle());
+        allUser.setLastName(allUserDto.getLastName());
+        allUser.setFirstName(allUserDto.getFirstName());
+        allUser.setEmailAddress(allUserDto.getEmailAddress());
+        allUser.setPassword(passwordEncryptionUtil.encrypt(allUserDto.getPassword()));
+        allUser.setStreet(allUserDto.getStreet());
+        allUser.setHouseNumber(allUserDto.getHouseNumber());
+        allUser.setPostalCode(allUserDto.getPostalCode());
+        allUser.setPhoneNumber(allUserDto.getPhoneNumber());
+        allUser.setCity(allUserDto.getCity());
+        allUser.setCountry(allUserDto.getCountry());
+        allUser.setDateOfBirth(allUserDto.getDateOfBirth());
+        allUser.setPlaceOfBirth(allUserDto.getPlaceOfBirth());
+        allUser.setCountryOfBirth(allUserDto.getCountryOfBirth());
+        allUser.setBankCode(allUserDto.getBankCode());
+        allUser.setIban(allUserDto.getIban());
+        allUser.setDescription(allUserDto.getDescription());
+        allUser.setPicture(allUserDto.getPicture());
 
         //@TODO: Dangerous!
-        AllUser.setUserRoleIds(AllUserDto.getUserRoleIds());
-        AllUser.setTutorsIds(AllUserDto.getTutorsIds());
-        AllUser.setAppointmentIds(AllUserDto.getAppointmentIds());
+        allUser.setUserRoleIds(allUserDto.getUserRoleIds());
+        allUser.setTutorsIds(allUserDto.getTutorsIds());
+        allUser.setAppointmentIds(allUserDto.getAppointmentIds());
 
-        AllUser.setFachIds(AllUserDto.getFachIds());
-        AllUser.setContractIds(AllUserDto.getContractIds());
-        AllUser.setSchoolTutorsIds(AllUserDto.getSchoolTutorsIds());
-        AllUser.setAccountActive(AllUserDto.isAccountActive());
-        AllUser.setTaxId(AllUserDto.getTaxId());
-        AllUser.setHobbies(AllUserDto.getHobbies());
-        AllUser.setZoomLink(AllUserDto.getZoomLink());
-        AllUser.setAvailabilityTime(AllUserDto.getAvailabilityTime());
-        AllUser.setParentFirstName(AllUserDto.getParentFirstName());
-        AllUser.setParentLastName(AllUserDto.getParentLastName());
-        AllUser.setSchoolLevel(AllUserDto.getSchoolLevel());
+        allUser.setFachIds(allUserDto.getFachIds());
+        allUser.setContractIds(allUserDto.getContractIds());
+        allUser.setSchoolTutorsIds(allUserDto.getSchoolTutorsIds());
+        allUser.setAccountActive(allUserDto.isAccountActive());
+        allUser.setTaxId(allUserDto.getTaxId());
+        allUser.setHobbies(allUserDto.getHobbies());
+        allUser.setZoomLink(allUserDto.getZoomLink());
+        allUser.setAvailabilityTime(allUserDto.getAvailabilityTime());
+        allUser.setParentFirstName(allUserDto.getParentFirstName());
+        allUser.setParentLastName(allUserDto.getParentLastName());
+        allUser.setSchoolLevel(allUserDto.getSchoolLevel());
 
-        return AllUser;
+        return allUser;
     }
 
     public AllUserDto convertToDto(AllUser alleUser) {
