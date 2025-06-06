@@ -61,22 +61,9 @@ public class AvailabilityService {
          List<Availability> todelete= getAll();
          System.out.println(todelete.size());
           for (Availability availability : todelete) {
-              if(availability.getUserId().equals(dto.getUserId())) {
-                  System.out.println(todelete.size() + "" +dto.getUserId());
-                  if(availability.getTag().equals(dto.getTag())) {
-                      System.out.println(todelete.size() + "" +dto.getTag());
-                      if(availability.getMonat().equals(dto.getMonat())) {
-                          System.out.println(todelete.size() + "" +dto.getMonat());
-                          if(availability.getJahr().equals(dto.getJahr())) {
-                              System.out.println(todelete.size() + "" +dto.getJahr());
-                              if(availability.getUhrzeit().equals(dto.getUhrzeit())) {
-                                  System.out.println(todelete.size() + "" +dto.getUhrzeit());
+              if(availability.getUserId().equals(dto.getUserId())&&availability.getTag().equals(dto.getTag())&&availability.getMonat().equals(dto.getMonat())
+              &&availability.getJahr().equals(dto.getJahr())&&availability.getUhrzeit().equals(dto.getUhrzeit())) {
                                   availabilityDao.deleteById(availability.getId());
-                                  return;
-                              }
-                          }
-                      }
-                  }
               }
 
 
