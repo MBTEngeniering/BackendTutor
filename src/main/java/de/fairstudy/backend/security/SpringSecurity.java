@@ -65,7 +65,7 @@ public class SpringSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(
-                                        new AntPathRequestMatcher("/api/public/**"),
+                                        new AntPathRequestMatcher("/api/public/**/**"),
                                         new AntPathRequestMatcher("/api/fach/**/**", "GET")
                                 )
                                 .permitAll())
