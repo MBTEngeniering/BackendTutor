@@ -9,6 +9,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class AvailabilityDto {
+    private Long id;
     private UUID userId;
     private String tag;
     private String monat;

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,7 @@ public class AvailabilityService {
     public List<AvailabilityDto> getAllByUserId(UUID userId) {
         return availabilityDao.findByUserId(userId).stream()
                 .map(a -> AvailabilityDto.builder()
+                        .id(a.getId())
                         .userId(a.getUserId())
                         .tag(a.getTag())
                         .monat(a.getMonat())
@@ -57,18 +59,6 @@ public class AvailabilityService {
     public void deleteAvailability(Long id) {
         availabilityDao.deleteById(id);
     }
-    public void deleteByAllFields(AvailabilityDto dto) {
-         List<Availability> todelete= getAll();
-         System.out.println(todelete.size());
-          for (Availability availability : todelete) {
-              if(availability.getUserId().equals(dto.getUserId())&&availability.getTag().equals(dto.getTag())&&availability.getMonat().equals(dto.getMonat())
-              &&availability.getJahr().equals(dto.getJahr())&&availability.getUhrzeit().equals(dto.getUhrzeit())) {
-                                  availabilityDao.deleteById(availability.getId());
-              }
 
-
-          }
-
-    }
 
 }

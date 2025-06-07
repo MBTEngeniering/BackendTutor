@@ -41,9 +41,5 @@ public class AvailabilityController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/availability/deleteByFields")
-    public ResponseEntity<Void> deleteByAllFields(@RequestBody AvailabilityDto dto) {
-        availabilityService.deleteByAllFields(dto);
-        return ResponseEntity.noContent().build();
-    }
+
 }
