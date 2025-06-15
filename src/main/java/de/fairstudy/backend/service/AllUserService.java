@@ -213,6 +213,7 @@ public class AllUserService {
     public AllUserDto convertToDto(AllUser alleUser) {
         AllUserDto AllUserDto = new AllUserDto();
         AllUserDto.setSalutation(alleUser.getSalutation());
+        AllUserDto.setId(alleUser.getId());
         AllUserDto.setTitle(alleUser.getTitle());
         AllUserDto.setLastName(alleUser.getLastName());
         AllUserDto.setFirstName(alleUser.getFirstName());

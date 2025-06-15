@@ -66,7 +66,8 @@ public class SpringSecurity {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(
                                         new AntPathRequestMatcher("/api/public/**/**"),
-                                        new AntPathRequestMatcher("/api/fach/**/**", "GET")
+                                        new AntPathRequestMatcher("/api/fach/**/**", "GET"),
+                                          new AntPathRequestMatcher("/api/allusers/**/**")
                                 )
                                 .permitAll())
                 .securityMatcher("/api/**")
