@@ -17,6 +17,7 @@ public class AllUserController {
 
     private final AllUserService allUserService;
 
+
     public AllUserController(AllUserService allUserService) {
         this.allUserService = allUserService;
     }

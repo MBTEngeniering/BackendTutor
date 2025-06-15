@@ -1,8 +1,13 @@
 package de.fairstudy.backend.service;
+import de.fairstudy.backend.dto.AllUserDto;
+import de.fairstudy.backend.entity.AllUser;
 import de.fairstudy.backend.entity.Post;
 import de.fairstudy.backend.dto.PostDto;
+import de.fairstudy.backend.repository.AllUserDao;
 import de.fairstudy.backend.repository.PostDao;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,6 +18,7 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostDao postDao;
+    private final AllUserService alluserService;
 
     public Post createPost(PostDto postDto) {
         List<Post.Nachricht> nachrichten = postDto.getNachrichten().stream()
@@ -27,8 +33,22 @@ public class PostService {
                 .empfaenger(postDto.getEmpfaenger())
                 .nachrichten(nachrichten)
                 .build();
+Post savePost= postDao.save(post);
 
-        return postDao.save(post);
+System.out.println("Die erstelle Nachricht ahst : "+savePost.getId());
+        Optional<AllUserDto> sender= alluserService.getUsersById(savePost.getSender());
+        Optional<AllUserDto> emphaenger= alluserService.getUsersById(savePost.getEmpfaenger());
+        if(sender.isPresent()){
+            AllUserDto senderToupdate= sender.get();
+            senderToupdate.getMessage().add(savePost.getId());
+            alluserService.updateUsers(senderToupdate.getId(),senderToupdate);
+        }
+        if(emphaenger.isPresent()){
+            AllUserDto emphaengerToupdate= emphaenger.get();
+            emphaengerToupdate.getMessage().add(savePost.getId());
+            alluserService.updateUsers(emphaengerToupdate.getId(),emphaengerToupdate);
+        }
+        return postDao.save(savePost);
     }
 
     public List<Post> getAllPosts() {
@@ -38,13 +58,19 @@ public class PostService {
     public Optional<Post> getPostById(UUID id) {
         return postDao.findById(id);
     }
+    @Transactional
     public List<Post> getPostsBySender(UUID senderId) {
-        return postDao.findBySender(senderId);
+        List<Post> posts = postDao.findBySender(senderId);
+        posts.forEach(post -> Hibernate.initialize(post.getNachrichten())); // Lazy-Loading umgehen
+        return posts;
+    }
+    @Transactional
+    public List<Post> getPostsByEmpfaenger(UUID empfaengerId) {
+        List<Post> posts = postDao.findByEmpfaenger(empfaengerId);
+        posts.forEach(post -> Hibernate.initialize(post.getNachrichten())); // Lazy-Loading umgehen
+        return posts;
     }
 
-    public List<Post> getPostsByEmpfaenger(UUID empfaengerId) {
-        return postDao.findByEmpfaenger(empfaengerId);
-    }
     public void deletePost(UUID id) {
         if (!postDao.existsById(id)) {
             throw new NoSuchElementException("Post nicht gefunden: " + id);

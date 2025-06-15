@@ -30,9 +30,9 @@ public class CorsConfig {
                 "https://fairstudy.eu",
                 "https://fairstudy.org"
         };
-       // config.setAllowedOrigins(List.of(frontendOrigins));
-        config.setAllowedOrigins(List.of(frontendOrigins));
-        config.setAllowedOrigins(Arrays.asList(frontendOrigins));
+       config.setAllowedOrigins(List.of(frontendOrigins));
+      //  config.setAllowedOrigins(List.of(frontendOrigins));
+       // config.setAllowedOrigins(Arrays.asList(frontendOrigins));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD", "TRACE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
