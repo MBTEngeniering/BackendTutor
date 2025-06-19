@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/fach")
-@Secured({"ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN"})
+//@Secured({"ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN"})
 public class FachController {
 
     private final FachService fachService;

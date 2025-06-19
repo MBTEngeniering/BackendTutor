@@ -59,6 +59,7 @@ public class AuthController {
             eventPublisher.publishEvent(new UserLoginEvent(response.getUsername()));
 
             var user = response.getUser();
+            user.setPassword(null);
             user.setTimestamp(response.getTimestamp() / 1000L); // Convert to seconds
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());

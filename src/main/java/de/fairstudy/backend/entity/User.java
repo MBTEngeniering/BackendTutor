@@ -1,6 +1,7 @@
 package de.fairstudy.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class User {
     private String bankCode;
     private String iban;
     private String picture;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private String taxId;
     private String hobbies;
