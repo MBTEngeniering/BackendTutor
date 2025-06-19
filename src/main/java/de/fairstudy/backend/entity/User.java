@@ -64,6 +64,5 @@ public class User {
     private List<Date> availabilityTime = new ArrayList<>();
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<UUID> appointmentIds = new ArrayList<>();
-    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<UUID> message = new ArrayList<>();
+
 }

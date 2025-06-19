@@ -3,7 +3,7 @@ import de.fairstudy.backend.dto.AllUserDto;
 import de.fairstudy.backend.entity.AllUser;
 import de.fairstudy.backend.entity.Post;
 import de.fairstudy.backend.dto.PostDto;
-import de.fairstudy.backend.repository.AllUserDao;
+
 import de.fairstudy.backend.repository.PostDao;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,17 +35,14 @@ public class PostService {
                 .build();
 Post savePost= postDao.save(post);
 
-System.out.println("Die erstelle Nachricht ahst : "+savePost.getId());
         Optional<AllUserDto> sender= alluserService.getUsersById(savePost.getSender());
         Optional<AllUserDto> emphaenger= alluserService.getUsersById(savePost.getEmpfaenger());
         if(sender.isPresent()){
             AllUserDto senderToupdate= sender.get();
-            senderToupdate.getMessage().add(savePost.getId());
             alluserService.updateUsers(senderToupdate.getId(),senderToupdate);
         }
         if(emphaenger.isPresent()){
             AllUserDto emphaengerToupdate= emphaenger.get();
-            emphaengerToupdate.getMessage().add(savePost.getId());
             alluserService.updateUsers(emphaengerToupdate.getId(),emphaengerToupdate);
         }
         return postDao.save(savePost);
