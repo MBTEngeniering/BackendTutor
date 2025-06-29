@@ -7,6 +7,7 @@ import de.fairstudy.backend.exception.InvalidCredentialsException;
 import de.fairstudy.backend.exception.UserAlreadyExistsException;
 import de.fairstudy.backend.exception.UserNotFoundException;
 import de.fairstudy.backend.entity.AllUser;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -90,7 +91,7 @@ public class AllUserService {
     public List<AllUserDto> getUserByTaxId(String taxId) {
         return AllUserDao.findByTaxId(taxId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
-
+    @Transactional
     public AllUserDto updateUsers(UUID id, AllUserDto AllUserDto) {
 
         Optional<AllUser> optionalAllUser = AllUserDao.findById(id);
