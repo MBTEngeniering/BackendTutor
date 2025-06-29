@@ -91,7 +91,6 @@ public class AllUserService {
     public List<AllUserDto> getUserByTaxId(String taxId) {
         return AllUserDao.findByTaxId(taxId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
-    @Transactional
     public AllUserDto updateUsers(UUID id, AllUserDto AllUserDto) {
 
         Optional<AllUser> optionalAllUser = AllUserDao.findById(id);
