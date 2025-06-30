@@ -18,7 +18,8 @@ public class BackendApplication implements CommandLineRunner{
     @Override
     public void run(String... args) {
         DateFormat formatter = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("Startup time: " + formatter.format(new Date(System.currentTimeMillis())));
-        System.out.println("Spring Boot version: " + SpringApplication.class.getPackage().getImplementationVersion());
+//        System.out.println("Spring Boot version: " + SpringApplication.class.getPackage().getImplementationVersion());
     }
 }
