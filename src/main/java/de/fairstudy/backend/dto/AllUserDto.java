@@ -31,7 +31,6 @@ public class AllUserDto {
 //    @JsonIgnore
 //    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
-
     private String street;
     private String houseNumber;
     private String postalCode;

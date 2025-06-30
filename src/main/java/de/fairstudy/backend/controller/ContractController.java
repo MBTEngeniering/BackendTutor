@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/contracts")
+@RequestMapping("/api/public/contracts")
 public class ContractController {
 
     @Autowired

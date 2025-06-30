@@ -39,7 +39,7 @@ public class AllUserController {
     }
 
     @GetMapping("/{id}")
-    @Secured({"ROLE_STUDENT", "ROLE_ADMIN"})
+   // @Secured({"ROLE_STUDENT", "ROLE_ADMIN"})
     public Optional<AllUserDto> getTutorById(@PathVariable UUID id) {
         return allUserService.getUsersById(id);
     }

@@ -67,6 +67,7 @@ public class SpringSecurity {
                         request.requestMatchers(
                                         new AntPathRequestMatcher("/api/public/**"),
                                         new AntPathRequestMatcher("/api/public/**/**"),
+                                        new AntPathRequestMatcher("/api/public/**/**/**"),
                                         new AntPathRequestMatcher("/api/fach/**", "GET"),
                                         new AntPathRequestMatcher("/api/fach/**/**", "GET"),
                                         new AntPathRequestMatcher("/api/allusers/**/**")
