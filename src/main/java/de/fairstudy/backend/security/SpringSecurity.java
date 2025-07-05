@@ -3,13 +3,11 @@ package de.fairstudy.backend.security;
 import de.fairstudy.backend.service.PasswordEncryptionUtil;
 import de.fairstudy.backend.service.api.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,16 +22,22 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.List;
+
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SpringSecurity {
 
+    private static final String API_PREFIX = "/api";
+    private static final String PUBLIC_PATH = API_PREFIX + "/public/**";
+    private static final String AUTH_PATH = API_PREFIX + "/auth/**";
+    private static final String FACHE_PATH = API_PREFIX + "/fach/**";
+    private static final String ALL_USERS_PATH = API_PREFIX + "/allusers/**/**";
+
     private final JwtAuthenticationFilter jwtAuthFilter;
-
     private final UserDetailsService userDetailsService;
-
     private final JwtAuthenticationEntryPoint exceptionHandler;
 
     @Bean
@@ -51,7 +55,7 @@ public class SpringSecurity {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-//    @Bean
+    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -62,23 +66,14 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain securityFilterChainApi(HttpSecurity http) throws Exception {
         http
+                .securityMatcher(API_PREFIX + "/**")
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request ->
-                        request.requestMatchers(
-                                        new AntPathRequestMatcher("/api/public/**"),
-                                        new AntPathRequestMatcher("/api/public/**/**"),
-                                        new AntPathRequestMatcher("/api/public/**/**/**"),
-                                        new AntPathRequestMatcher("/api/fach/**", "GET"),
-                                        new AntPathRequestMatcher("/api/fach/**/**", "GET"),
-                                        new AntPathRequestMatcher("/api/allusers/**/**")
-                                )
-                                .permitAll())
-                .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
+                        .requestMatchers(
+                                publicEndpoints().toArray(new AntPathRequestMatcher[0])
+                        ).permitAll()
+                        .requestMatchers(AUTH_PATH).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(exceptionHandler)
@@ -89,18 +84,22 @@ public class SpringSecurity {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
+
         return http.build();
+    }
+
+    private List<AntPathRequestMatcher> publicEndpoints() {
+        return List.of(
+                new AntPathRequestMatcher(PUBLIC_PATH),
+                new AntPathRequestMatcher(PUBLIC_PATH + "/**"),
+                new AntPathRequestMatcher(FACHE_PATH, "GET"),
+                new AntPathRequestMatcher(FACHE_PATH + "/**", "GET"),
+                new AntPathRequestMatcher(ALL_USERS_PATH)
+        );
     }
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
     }
 }

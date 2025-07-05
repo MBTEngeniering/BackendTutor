@@ -10,7 +10,7 @@
     </parent>
     <groupId>de.fairstudy</groupId>
     <artifactId>backend</artifactId>
-    <version>app</version>
+    <version>1.0.0</version>
     <name>backend</name>
     <description>backend</description>
     <url/>
@@ -128,6 +128,7 @@
                 <executions>
                     <execution>
                         <configuration>
+                            <finalName>backend-app</finalName>
                             <classifier>spring-boot</classifier>
                             <mainClass>de.fairstudy.backend.BackendApplication</mainClass>
                             <excludes>
