@@ -41,5 +41,10 @@ public class AvailabilityController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/availability/uhrzeit/{uhrzeit}/user/{userId}")
+    public ResponseEntity<Void> deleteByUhrzeitAndUserId(@PathVariable String uhrzeit, @PathVariable UUID userId) {
+        availabilityService.deleteByUhrzeitAndUserId(uhrzeit, userId);
+        return ResponseEntity.noContent().build();
+    }
 
 }

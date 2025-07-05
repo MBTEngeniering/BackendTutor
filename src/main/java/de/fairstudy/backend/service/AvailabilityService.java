@@ -4,6 +4,7 @@ package de.fairstudy.backend.service;
 import de.fairstudy.backend.dto.AvailabilityDto;
 import de.fairstudy.backend.entity.Availability;
 import de.fairstudy.backend.repository.AvailabilityDao;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,10 @@ public class AvailabilityService {
 
     public void deleteAvailability(Long id) {
         availabilityDao.deleteById(id);
+    }
+    @Transactional
+    public void deleteByUhrzeitAndUserId(String uhrzeit, UUID userId) {
+        availabilityDao.deleteByUhrzeitAndUserId(uhrzeit,userId);
     }
 
 

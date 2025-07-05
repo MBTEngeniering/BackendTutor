@@ -12,5 +12,6 @@ import java.util.UUID;
 public interface AvailabilityDao extends JpaRepository<Availability, Long> {
     List<Availability> findByUserId(UUID userId);
     boolean existsByUserIdAndTagAndMonatAndJahrAndUhrzeit(UUID userId, String tag, String monat, String jahr, String uhrzeit);
+    void deleteByUhrzeitAndUserId(String uhrzeit, UUID userId);
 
 }
