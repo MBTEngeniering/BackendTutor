@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/public/transaktionen")
+@RequestMapping("/api/public/transaktionen")
 public class TransaktionController {
 
     private final TransaktionService service;

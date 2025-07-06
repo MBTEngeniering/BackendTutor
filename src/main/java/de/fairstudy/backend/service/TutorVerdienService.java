@@ -20,7 +20,7 @@ public class TutorVerdienService {
         // Prüfen, ob bereits vorhanden
         Optional<TutorVerdien> existing = repository.findByTutorId(tutorId);
         if (existing.isPresent()) {
-            throw new IllegalStateException("Verdien für diesen Tutor existiert bereits!");
+            throw new IllegalStateException("Verdienst für diesen Tutor existiert bereits!");
         }
 
         TutorVerdien verdien = new TutorVerdien();
