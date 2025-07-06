@@ -128,4 +128,13 @@ public class AppointmentService {
         appointment.setHourlyRate(dto.getHourlyRate());
         return appointment;
     }
+    public Appointment updateStudentIsPresent(UUID id, boolean isPresent) {
+        Appointment appointment = findById(id);
+        if (appointment == null) {
+            throw new RuntimeException("Appointment not found");
+        }
+        appointment.setStudentIsPresent(isPresent);
+        return appointmentDao.save(appointment);
+    }
+
 }
