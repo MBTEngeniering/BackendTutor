@@ -77,5 +77,17 @@ public class AppointmentController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PatchMapping("/{id}/tutor-present")
+    public ResponseEntity<Appointment> updateTutorIsPresent(
+            @PathVariable UUID id,
+            @RequestParam boolean isPresent) {
+        try {
+            Appointment updated = appointmentService.updateTutorIsPresent(id, isPresent);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }

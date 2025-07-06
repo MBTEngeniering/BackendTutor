@@ -136,5 +136,13 @@ public class AppointmentService {
         appointment.setStudentIsPresent(isPresent);
         return appointmentDao.save(appointment);
     }
+    public Appointment updateTutorIsPresent(UUID id, boolean isPresent) {
+        Appointment appointment = findById(id);
+        if (appointment == null) {
+            throw new RuntimeException("Appointment not found");
+        }
+        appointment.setTutorIsPresent(isPresent);
+        return appointmentDao.save(appointment);
+    }
 
 }
