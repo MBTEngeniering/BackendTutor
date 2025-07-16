@@ -23,8 +23,16 @@ public class VerdienTabelleController {
         return service.createVerdienTabelle(tutorId, appointmentId);
     }
 
+    @GetMapping("/appointement/{appointementId}")
+    public List<VerdienTabelle> getVerdienByAppointementId(@PathVariable UUID appointementId) {
+        return service.getVerdienByAppointementId(appointementId);
+    }
     @GetMapping("/tutor/{tutorId}")
-    public List<VerdienTabelle> getVerdienByAppointementId(@PathVariable UUID tutorId) {
+    public List<VerdienTabelle> getVerdienBytutorId(@PathVariable UUID tutorId) {
         return service.getVerdienByAppointementId(tutorId);
+    }
+    @GetMapping("/student/{studentId}")
+    public List<VerdienTabelle> getVerdienBystudentId(@PathVariable UUID studentId) {
+        return service.getVerdienByAppointementId(studentId);
     }
 }

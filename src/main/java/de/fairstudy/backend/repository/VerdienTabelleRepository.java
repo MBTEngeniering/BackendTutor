@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface VerdienTabelleRepository extends JpaRepository<VerdienTabelle, UUID> {
     List<VerdienTabelle> findByAppointementId(UUID appointementId);
+    List<VerdienTabelle> findByTutorId(UUID tutorId);
+    List<VerdienTabelle> findByStudentId(UUID studentId);
 }

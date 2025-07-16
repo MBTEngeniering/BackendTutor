@@ -47,6 +47,8 @@ public class VerdienTabelleService {
 
         VerdienTabelle vt = new VerdienTabelle();
         vt.setAppointementId(appointmentId);
+        vt.setTutorId(appointment.getTutorId());
+        vt.setStudentId(appointment.getStudentId());
 
         if (appointment.getStudentIsPresent() && appointment.getTutorIsPresent()) {
             vt.setHourlyId(verdien.getStundentPreise());
@@ -82,5 +84,11 @@ public class VerdienTabelleService {
 
     public List<VerdienTabelle> getVerdienByAppointementId(UUID appointementId) {
         return verdienTabelleRepository.findByAppointementId(appointementId);
+    }
+    public List<VerdienTabelle> getVerdienByTutorId(UUID TutorId) {
+        return verdienTabelleRepository.findByTutorId(TutorId);
+    }
+    public List<VerdienTabelle> getVerdienByStudentId(UUID StudentId) {
+        return verdienTabelleRepository.findByStudentId(StudentId);
     }
 }

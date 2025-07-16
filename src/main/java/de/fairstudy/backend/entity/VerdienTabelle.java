@@ -15,6 +15,8 @@ public class VerdienTabelle {
     @GeneratedValue
     private UUID id;
     private UUID appointementId;
+    private UUID TutorId;
+    private UUID studentId;
     private double hourlyId;
     private String status;
 }
