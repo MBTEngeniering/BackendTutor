@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/verdientabelle")
+@RequestMapping("/api/public/verdientabelle")
 public class VerdienTabelleController {
 
     private final VerdienTabelleService service;

@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/verdien")
+@RequestMapping("/api/public/verdien")
 public class TutorVerdienController {
 
     private final TutorVerdienService service;
