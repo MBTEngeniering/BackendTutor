@@ -2,6 +2,7 @@ package de.fairstudy.backend;
 
 import de.fairstudy.backend.batch.AblaufPruefungBatchJob;
 import de.fairstudy.backend.batch.AvailabilityCleanupJob;
+import de.fairstudy.backend.batch.VerdientAnpassenJob;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,10 +18,12 @@ public class BackendApplication implements CommandLineRunner{
 
     private final AvailabilityCleanupJob availabilityCleanupJob;
     private final AblaufPruefungBatchJob ablaufPruefungBatchJob;
+    private final VerdientAnpassenJob verdientAnpassenJob;
 
-    public BackendApplication(AvailabilityCleanupJob availabilityCleanupJob, AblaufPruefungBatchJob ablaufPruefungBatchJob) {
+    public BackendApplication(AvailabilityCleanupJob availabilityCleanupJob, AblaufPruefungBatchJob ablaufPruefungBatchJob, VerdientAnpassenJob verdientAnpassenJob) {
         this.availabilityCleanupJob = availabilityCleanupJob;
         this.ablaufPruefungBatchJob = ablaufPruefungBatchJob;
+        this.verdientAnpassenJob = verdientAnpassenJob;
     }
 
     public static void main(String[] args) {
@@ -36,5 +39,8 @@ public class BackendApplication implements CommandLineRunner{
         availabilityCleanupJob.removePastAvailabilities();
         System.out.println("▶️ Abgelaufen Verträge prüfen");
         ablaufPruefungBatchJob.pruefeUndSetzeStunden();
+
+        System.out.println("▶️VerdientAnpassung");
+        verdientAnpassenJob.checkAndCreateVerdienTabelle();
     }
 }
