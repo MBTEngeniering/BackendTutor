@@ -29,10 +29,10 @@ public class VerdienTabelleController {
     }
     @GetMapping("/tutor/{tutorId}")
     public List<VerdienTabelle> getVerdienBytutorId(@PathVariable UUID tutorId) {
-        return service.getVerdienByAppointementId(tutorId);
+        return service.getVerdienByTutorId(tutorId);
     }
     @GetMapping("/student/{studentId}")
     public List<VerdienTabelle> getVerdienBystudentId(@PathVariable UUID studentId) {
-        return service.getVerdienByAppointementId(studentId);
+        return service.getVerdienByStudentId(studentId);
     }
 }
