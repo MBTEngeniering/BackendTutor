@@ -19,4 +19,5 @@ public class AppointmentDTO {
     private Boolean tutorIsPresent;
     private Long fachId;
     private double hourlyRate;
+    private Boolean isBewertet;
 }

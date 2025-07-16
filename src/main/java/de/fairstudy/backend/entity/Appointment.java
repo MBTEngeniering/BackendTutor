@@ -26,4 +26,5 @@ public class Appointment {
     private Boolean tutorIsPresent;
     private Long fachId;
     private double hourlyRate;
+    private Boolean isBewertet;
 }

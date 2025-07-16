@@ -72,7 +72,7 @@ public class VerdienTabelleService {
             vt.setStatus("nur_tutor");
         }
         else if (!appointment.getTutorIsPresent()&&appointment.getStudentIsPresent()) {
-            vt.setHourlyId(-20);
+            vt.setHourlyId(-10);
             vt.setStatus("Student");
         }else {
             vt.setHourlyId(0);
