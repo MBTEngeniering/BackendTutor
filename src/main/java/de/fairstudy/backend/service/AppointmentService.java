@@ -113,6 +113,8 @@ public class AppointmentService {
         dto.setTutorIsPresent(appointment.getTutorIsPresent());
         dto.setFachId(appointment.getFachId());
         dto.setHourlyRate(appointment.getHourlyRate());
+        dto.setTutorFeedback(appointment.getTutorFeedback());
+        dto.setStudentFeedback(appointment.getStudentFeedback());
         return dto;
     }
 
@@ -120,12 +122,15 @@ public class AppointmentService {
         Appointment appointment = new Appointment();
         appointment.setStartDate(dto.getStartDate());
         appointment.setEndDate(dto.getEndDate());
+        appointment.setTutorFeedback(dto.getTutorFeedback());
+        appointment.setStudentFeedback(dto.getStudentFeedback());
         appointment.setTutorId(dto.getTutorId());
         appointment.setStudentId(dto.getStudentId());
         appointment.setStudentIsPresent(dto.getStudentIsPresent());
         appointment.setTutorIsPresent(dto.getTutorIsPresent());
         appointment.setFachId(dto.getFachId());
         appointment.setHourlyRate(dto.getHourlyRate());
+
         return appointment;
     }
     public Appointment updateStudentIsPresent(UUID id, boolean isPresent) {
@@ -144,5 +149,22 @@ public class AppointmentService {
         appointment.setTutorIsPresent(isPresent);
         return appointmentDao.save(appointment);
     }
+    public Appointment updateStudentFeedback(UUID id, String studentFeedback) {
+        Appointment appointment = findById(id);
+        if (appointment == null) {
+            throw new RuntimeException("Appointment not found");
+        }
+        appointment.setStudentFeedback(studentFeedback);
+        return appointmentDao.save(appointment);
+    }
+    public Appointment updateTutorFeedback(UUID id, String tutorFeedback) {
+        Appointment appointment = findById(id);
+        if (appointment == null) {
+            throw new RuntimeException("Appointment not found");
+        }
+        appointment.setTutorFeedback(tutorFeedback);
+        return appointmentDao.save(appointment);
+    }
+
 
 }

@@ -27,4 +27,6 @@ public class Appointment {
     private Long fachId;
     private double hourlyRate;
     private Boolean isBewertet;
+    private String TutorFeedback;
+    private String StudentFeedback;
 }

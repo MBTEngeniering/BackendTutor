@@ -20,4 +20,6 @@ public class AppointmentDTO {
     private Long fachId;
     private double hourlyRate;
     private Boolean isBewertet;
+    private String TutorFeedback;
+    private String StudentFeedback;
 }

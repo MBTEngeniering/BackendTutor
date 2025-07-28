@@ -88,6 +88,29 @@ public class AppointmentController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PatchMapping("/{id}/student-feedback")
+    public ResponseEntity<Appointment> updateStudentFeedback(
+            @PathVariable UUID id,
+            @RequestParam String studentFeedback) {
+        try {
+            Appointment updated = appointmentService.updateStudentFeedback(id, studentFeedback);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PatchMapping("/{id}/tutor-feedback")
+    public ResponseEntity<Appointment> updateTutorFeedback(
+            @PathVariable UUID id,
+            @RequestParam String tutorFeedback) {
+        try {
+            Appointment updated = appointmentService.updateTutorFeedback(id, tutorFeedback);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
 }
