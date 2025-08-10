@@ -6,10 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -30,9 +27,7 @@ public class CorsConfig {
                 "https://fairstudy.eu",
                 "https://fairstudy.org"
         };
-       config.setAllowedOrigins(List.of(frontendOrigins));
-      //  config.setAllowedOrigins(List.of(frontendOrigins));
-       // config.setAllowedOrigins(Arrays.asList(frontendOrigins));
+        config.setAllowedOrigins(List.of(frontendOrigins));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD", "TRACE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
