@@ -40,7 +40,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
+            <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -114,6 +114,7 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
