@@ -37,6 +37,8 @@ import java.util.List;
 public class SpringSecurity {
     private static final PathPatternParser PARSER = new PathPatternParser();
 
+
+    private static final String ROOT_PREFIX = "/";
     private static final String API_PREFIX = "/api";
     private static final String PUBLIC_PATH = API_PREFIX + "/public/**";
     private static final String AUTH_PATH = API_PREFIX + "/auth/**";
@@ -77,8 +79,8 @@ public class SpringSecurity {
                 .securityMatcher(API_PREFIX + "/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(PUBLIC_PATH, PUBLIC_PATH).permitAll()
-                        .requestMatchers(HttpMethod.GET, FACHE_PATH, FACHE_PATH).permitAll()
+                        .requestMatchers(PUBLIC_PATH, PUBLIC_PATH, "/").permitAll()
+                        .requestMatchers(HttpMethod.GET, FACHE_PATH, ROOT_PREFIX).permitAll()
                         .requestMatchers(AUTH_PATH).permitAll()
                         .anyRequest().authenticated()
                 )
