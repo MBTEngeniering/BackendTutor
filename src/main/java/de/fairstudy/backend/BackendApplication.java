@@ -29,7 +29,7 @@ public class BackendApplication implements CommandLineRunner {
         this.ablaufPruefungBatchJob = ablaufPruefungBatchJob;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
 
