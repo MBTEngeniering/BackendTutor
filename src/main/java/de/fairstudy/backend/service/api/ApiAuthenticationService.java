@@ -92,6 +92,17 @@ public class ApiAuthenticationService {
                 .sameSite("Lax") // CSRF protection
                 .build();
 
+        /*
+        ResponseCookie cookie =
+        ResponseCookie.from("accessToken", jwt)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.ofMinutes(15))
+                .build();
+         */
+
         return AuthenticationResponse.builder().cookie(cookie.toString()).build();
     }
 }

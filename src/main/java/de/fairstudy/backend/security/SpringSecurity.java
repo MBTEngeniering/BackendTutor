@@ -43,6 +43,7 @@ public class SpringSecurity {
     private static final String PUBLIC_PATH = API_PREFIX + "/public/**";
     private static final String AUTH_PATH = API_PREFIX + "/auth/**";
     private static final String FACHE_PATH = API_PREFIX + "/fach/**";
+    private static final String ACTUATOR_PATH = "/actuator/**";
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
@@ -79,7 +80,7 @@ public class SpringSecurity {
                 .securityMatcher(API_PREFIX + "/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(PUBLIC_PATH, PUBLIC_PATH, "/").permitAll()
+                        .requestMatchers(PUBLIC_PATH, PUBLIC_PATH, ACTUATOR_PATH, ROOT_PREFIX).permitAll()
                         .requestMatchers(HttpMethod.GET, FACHE_PATH, ROOT_PREFIX).permitAll()
                         .requestMatchers(AUTH_PATH).permitAll()
                         .anyRequest().authenticated()
