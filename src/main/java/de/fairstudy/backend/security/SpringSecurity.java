@@ -78,6 +78,7 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChainApi(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         http
                 .securityMatcher(API_PREFIX + "/**")
+                .cors(cors -> cors.configure(http))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PUBLIC_PATH, PUBLIC_PATH, ACTUATOR_PATH, ROOT_PREFIX).permitAll()

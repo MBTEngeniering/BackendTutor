@@ -24,8 +24,11 @@ public class CorsConfig {
                 "http://localhost:3000",
                 "http://localhost:4173",
                 "https://fairstudy.de",
+                "https://www.fairstudy.de",
                 "https://fairstudy.eu",
-                "https://fairstudy.org"
+                "https://www.fairstudy.eu",
+                "https://fairstudy.org",
+                "https://www.fairstudy.org",
         };
         config.setAllowedOrigins(List.of(frontendOrigins));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD", "TRACE"));
