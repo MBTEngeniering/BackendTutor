@@ -83,6 +83,7 @@ public class SpringSecurity {
                         .requestMatchers(PUBLIC_PATH, PUBLIC_PATH, ACTUATOR_PATH, ROOT_PREFIX).permitAll()
                         .requestMatchers(HttpMethod.GET, FACHE_PATH, ROOT_PREFIX).permitAll()
                         .requestMatchers(AUTH_PATH).permitAll()
+                        .requestMatchers(API_PREFIX + "/checkout/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
