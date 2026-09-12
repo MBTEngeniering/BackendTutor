@@ -84,6 +84,7 @@ public class SpringSecurity {
                         .requestMatchers(HttpMethod.GET, FACHE_PATH, ROOT_PREFIX).permitAll()
                         .requestMatchers(AUTH_PATH).permitAll()
                         .requestMatchers(API_PREFIX + "/checkout/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, API_PREFIX + "/stripe/webhook").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
